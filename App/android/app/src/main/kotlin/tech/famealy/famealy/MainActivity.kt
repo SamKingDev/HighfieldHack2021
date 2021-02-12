@@ -1,4 +1,4 @@
-package com.emma12812.meal_app
+package tech.famealy.famealy
 
 import io.flutter.embedding.android.FlutterActivity
 

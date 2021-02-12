@@ -1,4 +1,4 @@
-# meal_app
+# famealy
 
 A new Flutter application.
 
