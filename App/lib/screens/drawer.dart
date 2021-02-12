@@ -21,8 +21,8 @@ class drawer extends StatelessWidget {
 
               },
             ),
-            ListTile(
-              title: Text('This is a tile'),
+            CustomListTile(
+
             ),
             ListTile(
               title: Text('This is a tile'),
@@ -35,4 +35,22 @@ class drawer extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class CustomListTile extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return InkWell(
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.person),
+          Text('Profile'),
+          Icon(Icons.arrow_right),
+        ],
+      ),
+    );
+  }
+
 }
