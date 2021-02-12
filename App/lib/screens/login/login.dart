@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:famealy/screens/profile/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,12 +19,12 @@ class Login extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
-              onPressed: null,
-              child: Text('Login with the googles'),
+              onPressed: () {Navigator.pushNamed(context, '/profile');},
+              child: Text('Login with Google'),
             ),
             RaisedButton(
               onPressed: (){exit(0);},
-              child: Text('Exit Apples')
+              child: Text('Exit')
             )
           ],
         ),
