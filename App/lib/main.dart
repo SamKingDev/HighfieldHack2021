@@ -1,4 +1,5 @@
 import 'package:famealy/screens/login/login.dart';
+import 'package:famealy/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -6,6 +7,7 @@ void main() {
     initialRoute: '/',
     routes: {
       '/': (context) => Login(),
+      '/profile': (context) => Profile(),
     },
   ));
 }
