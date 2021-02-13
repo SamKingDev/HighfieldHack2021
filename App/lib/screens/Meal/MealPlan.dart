@@ -10,13 +10,33 @@ class _mealPlanState extends State<mealPlan> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(children: [
-        Container(height: 500, color: Colors.red),
-        Container(height: 500, color: Colors.green),
-        Container(height: 500, color: Colors.orange),
-        Container(height: 500, color: Colors.blue),
-        Container(height: 500, color: Colors.red),
-        Container(height: 500, color: Colors.green),
-        Container(height: 500, color: Colors.orange),
+        Container(
+          child: Material(
+            elevation: 20,
+            child: Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Image.asset('assets/logo.png'),
+            ),
+          ),
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
       ]),
     );
   }
