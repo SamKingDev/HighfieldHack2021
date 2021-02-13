@@ -53,20 +53,81 @@ class _ProfileState extends State<Profile> {
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Image(image: AssetImage(
               'assets/logo.png'),
               height: 60,
             ),
-            CustomRow('First Name:', '...'),
-            CustomRow('Last Name:', '...'),
-            CustomRow('Family Group:', '...'),
-            CustomRow('Dietry Preferences:', '...'),
-            CustomRow('Allergies:', '...'),
+
+            Column(
+              children: [
+                CustomRow('First Name:', '...'),
+                CustomRow('Last Name:', '...'),
+                SizedBox(height: 20),
+                FamilyCustomRow('Family Group:', '...'),
+                CustomRow('Dietry Preferences:', '...'),
+                CustomRow('Allergies:', '...'),
+              ],
+            ),
+
           ],
         ),
       ),
+    );
+  }
+}
+
+class FamilyCustomRow extends StatelessWidget {
+
+  String text;
+  String content;
+
+  FamilyCustomRow(this.text, this.content);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: labelBoxDecoration(),
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: labelBoxDecoration(),
+                child: Center(
+                  child: Text(
+                    content,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        ButtonTheme(
+          height: 20,
+          child: RaisedButton(
+            color: Theme.of(context).accentColor,
+            onPressed: () {
+              Navigator.pushNamed(context, '/aboutFamily');
+            }, //
+            child: Text('What are family groups?'),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -81,7 +142,6 @@ class CustomRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
           padding: EdgeInsets.all(10),
@@ -93,19 +153,27 @@ class CustomRow extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          decoration: contentBoxDecoration(),
-          child: Text(
-            content,
-            style: TextStyle(
-              fontSize: 20,
+        SizedBox(width: 20),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: labelBoxDecoration(),
+            child: Center(
+              child: Text(
+                content,
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
             ),
           ),
         ),
+        SizedBox(height: 70),
       ],
     );
   }
 }
+
 
 
 class CustomListTile extends StatelessWidget{
@@ -159,9 +227,9 @@ class CustomListTile extends StatelessWidget{
 
 BoxDecoration labelBoxDecoration() {
   return BoxDecoration(
-    color: Colors.grey[400],
+    color: Colors.white,
     border: Border.all(
-        width: 3.0,
+        width: 1.0,
       color: Colors.grey[800]
     ),
     borderRadius: BorderRadius.all(
@@ -170,13 +238,3 @@ BoxDecoration labelBoxDecoration() {
   );
 }
 
-BoxDecoration contentBoxDecoration() {
-  return BoxDecoration(
-    border: Border(
-      bottom: BorderSide( //                   <--- left side
-        color: Colors.grey[500],
-        width: 3.0,
-      ),
-    ),
-  );
-}
