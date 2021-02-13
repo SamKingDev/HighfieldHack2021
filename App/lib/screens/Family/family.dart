@@ -93,13 +93,28 @@ class _FamilyPageState extends State<FamilyPage> {
           children: <Widget>[
             Image(
               image: AssetImage('assets/logo.png'),
-              height: 60,
+              height: 50,
             ),
-            CustomRow('First Name:', '...'),
-            CustomRow('Last Name:', '...'),
-            CustomRow('Family Group:', '...'),
-            CustomRow('Dietry Preferences:', '...'),
-            CustomRow('Allergies:', '...'),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/family.jpg'),
+                  radius: 50.0,
+                ),
+              ),
+            ),
+            //CustomRow('Members:', '...'),
+            //CustomRow('Name:', '...'),
+            //CustomRow('Dietry Preferences:', '...'),
+            //CustomRow('Allergies:', '...'),
+            RaisedButton.icon(
+              color: Colors.white,
+              onPressed: (){}, icon: Icon (Icons.fastfood) , label: Text ('View Weekly Meal Plan'),),
+            RaisedButton.icon(
+              color: Colors.white,
+              onPressed: (){}, icon: Icon (Icons.list) , label: Text ('View Shopping List'),),
+
           ],
         ),
       ),
