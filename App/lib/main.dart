@@ -4,6 +4,7 @@ import 'package:famealy/screens/Family/joinFamily.dart';
 import 'package:famealy/screens/Meal/DailyMealPlan.dart';
 import 'package:famealy/screens/Meal/GenerateMealPlan.dart';
 import 'package:famealy/screens/Meal/MealPlan.dart';
+import 'package:famealy/screens/Meal/ShoppingList.dart';
 import 'package:famealy/screens/Meal/SelectDay.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
@@ -28,6 +29,7 @@ void main() async {
         '/createFamily': (context) => createFamily(),
         '/joinFamily' : (context) => joinFamily(),
         '/mealPlan' : (context) => mealPlan(),
+        '/shoppinglist':(context)=>ShoppingList(),
         '/selectDay' : (context) => selectDay(),
         '/dailyMealPlan' : (context) => dailyMealPlan(),
         '/generateMealPlan' : (context) => generateMealPlan(),
