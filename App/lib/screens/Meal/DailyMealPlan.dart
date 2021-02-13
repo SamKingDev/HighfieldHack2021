@@ -25,13 +25,15 @@ class _dailyMealPlanState extends State<dailyMealPlan> {
               ),
             ),
           ),
-          Container(child: mealTile((){}),),
-          Container(child: mealTile((){}),),
-          Container(child: mealTile((){}),),
-          Container(),
-          Container(),
-          Container(),
-          Container(),
+          Container(
+            child: mealTile(() {}, "Breakfast"),
+          ),
+          Container(
+            child: mealTile(() {}, "Lunch"),
+          ),
+          Container(
+            child: mealTile(() {}, "Dinner"),
+          ),
         ]),
       ),
     );
@@ -40,27 +42,52 @@ class _dailyMealPlanState extends State<dailyMealPlan> {
 
 class mealTile extends StatefulWidget {
   Function onTap;
+  String mealType;
 
-  mealTile(this.onTap);
+  mealTile(this.onTap, String mealType) {
+    this.mealType = mealType;
+  }
 
   @override
   _mealTile createState() => _mealTile();
 }
 
 class _mealTile extends State<mealTile> {
+  String selectedValue = 'A';
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
-        child: InkWell(
-          splashColor: Colors.lightBlueAccent,
-          onTap: widget.onTap,
-          child: Container(child: Text('Drop Down Box'),),
-        ),
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(widget.mealType),
+          DropdownButton<String>(
+            value: selectedValue,
+            icon: Icon(Icons.arrow_downward),
+            iconSize: 24,
+            elevation: 16,
+            style: TextStyle(
+              color: Colors.deepPurple
+            ),
+            underline: Container(
+              height: 2,
+              color: Colors.deepPurple
+            ),
+            onChanged: (String newValue) {
+              setState(() {
+                selectedValue = newValue;
+              });
+            },
+            items: <String>['A', 'B', 'C', 'D']
+              .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value)
+                );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
