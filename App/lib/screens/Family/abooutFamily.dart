@@ -42,21 +42,28 @@ class _aboutFamilyState extends State<aboutFamily> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: ListView.builder(
-        itemCount: options.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
-            child: Card(
-              child: ListTile(
-                onTap: () {
-                  redirect(index);
-                },
-                title: Center(child: Text(options[index])),
-              ),
+      body: Column(
+        children: [
+          Text('Information about families'),
+          Expanded(
+            child: ListView.builder(
+              itemCount: options.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
+                  child: Card(
+                    child: ListTile(
+                      onTap: () {
+                        redirect(index);
+                      },
+                      title: Center(child: Text(options[index])),
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
