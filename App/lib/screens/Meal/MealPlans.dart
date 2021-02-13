@@ -10,12 +10,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class mealPlan extends StatefulWidget {
+class MealPlans extends StatefulWidget {
   @override
-  _mealPlanState createState() => _mealPlanState();
+  _MealPlansState createState() => _MealPlansState();
 }
 
-class _mealPlanState extends State<mealPlan> {
+class _MealPlansState extends State<MealPlans> {
 
   StreamSubscription<User> loginStateSubscription;
 
@@ -83,7 +83,7 @@ class _mealPlanState extends State<mealPlan> {
                     () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => mealPlan()),
+                    MaterialPageRoute(builder: (context) => MealPlans()),
                   )
                 }),
             CustomListTile(Icons.list, 'Shopping List', () => {}),

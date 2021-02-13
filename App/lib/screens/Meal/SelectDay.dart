@@ -1,4 +1,4 @@
-import 'package:famealy/screens/Meal/MealPlan.dart';
+import 'package:famealy/screens/Meal/MealPlans.dart';
 import 'package:flutter/material.dart';
 
 import 'DailyMealPlan.dart';
