@@ -10,6 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'ShoppingList.dart';
+
 class mealPlan extends StatefulWidget {
   @override
   _mealPlanState createState() => _mealPlanState();
@@ -86,7 +88,10 @@ class _mealPlanState extends State<mealPlan> {
                     MaterialPageRoute(builder: (context) => mealPlan()),
                   )
                 }),
-            CustomListTile(Icons.list, 'Shopping List', () => {}),
+            CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ShoppingList()),
+            )}),
             CustomListTile(Icons.help, 'Tutorial', () => {}),
             CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
           ],
