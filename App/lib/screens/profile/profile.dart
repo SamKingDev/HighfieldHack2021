@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
 import 'package:famealy/screens/Meal/MealPlan.dart';
+import 'package:famealy/screens/Meal/ShoppingList.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -120,7 +121,11 @@ class _ProfileState extends State<Profile> {
                           MaterialPageRoute(builder: (context) => mealPlan()),
                         )
                       }),
-              CustomListTile(Icons.list, 'Shopping List', () => {}),
+              CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ShoppingList()),
+              )
+              }),
               CustomListTile(Icons.help, 'Tutorial', () => {}),
               CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
             ],
