@@ -1,4 +1,3 @@
-import 'package:famealy/screens/Family/family.dart';
 import 'package:flutter/material.dart';
 
 class mealPlan extends StatefulWidget {
@@ -9,6 +8,36 @@ class mealPlan extends StatefulWidget {
 class _mealPlanState extends State<mealPlan> {
   @override
   Widget build(BuildContext context) {
-    return FamilyListWidget();
+    return SingleChildScrollView(
+      child: Column(children: [
+        Container(
+          child: Material(
+            elevation: 20,
+            child: Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Image.asset('assets/logo.png'),
+            ),
+          ),
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+        Container(
+
+        ),
+      ]),
+    );
   }
 }
