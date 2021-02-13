@@ -42,18 +42,27 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
     return Scaffold(
-        body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SignInButton(
-            Buttons.GoogleDark,
-            onPressed: () => authBloc.loginGoogle(),
+      backgroundColor: new Color.fromRGBO(61, 210, 204, 1),
+      body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+        Container(child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image(
+            image: AssetImage('assets/logo.png'),
+            height: 50,
           ),
-          RaisedButton(
-            onPressed: (){exit(0);},
-            child: Text('Exit')
-          )
+        )),
+        SignInButton(
+          Buttons.GoogleDark,
+          onPressed: () => authBloc.loginGoogle(),
+        ),
+        RaisedButton(
+            onPressed: () {
+              exit(0);
+            },
+            child: Text('Exit'))
         ],
       ),
     ));
