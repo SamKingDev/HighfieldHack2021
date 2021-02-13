@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   StreamSubscription<User> loginStateSubscription;
+  var email;
+  var fullName;
 
   @override
   void initState() {
@@ -26,6 +29,15 @@ class _ProfileState extends State<Profile> {
             builder: (context) => LoginScreen(),
           ),
         );
+      } else {
+        DocumentReference documentReference = FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
+
+        documentReference.snapshots().listen((event) {
+          setState(() {
+            email = event.data()["email"];
+            fullName = event.data()["full_name"];
+          });
+        });
       }
     });
     super.initState();
