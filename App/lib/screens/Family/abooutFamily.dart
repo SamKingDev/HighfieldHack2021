@@ -38,13 +38,18 @@ class _aboutFamilyState extends State<aboutFamily> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
-        title: Text('Choose a Location'),
+        title: Text('Families Menu'),
         centerTitle: true,
         elevation: 0,
       ),
       body: Column(
         children: [
-          Text('Information about families'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 30.0),
+            child: Text('Information about families dfsdf sdfdsf sdf dfsd fsdfsdf sdf sdfs d fd fsdf sdsdf',
+              softWrap: true,
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: options.length,

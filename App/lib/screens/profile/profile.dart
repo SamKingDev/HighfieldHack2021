@@ -58,7 +58,6 @@ class _ProfileState extends State<Profile> {
               'assets/logo.png'),
               height: 60,
             ),
-
             Column(
               children: [
                 CustomRow('First Name:', '...'),
@@ -69,7 +68,6 @@ class _ProfileState extends State<Profile> {
                 CustomRow('Allergies:', '...'),
               ],
             ),
-
           ],
         ),
       ),

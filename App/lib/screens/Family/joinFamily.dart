@@ -10,9 +10,21 @@ class _joinFamilyState extends State<joinFamily> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Join Family'),
+        title: Text('Join A Family'),
         centerTitle: true,
       ),
-    );
+      body: Column(
+        children: [
+          Text ('Enter Family Code Below:',
+          style: TextStyle(
+
+          )),
+          TextFormField(
+            decoration: InputDecoration(
+                labelText : 'Family Code'),
+          ),
+        ],
+      ),
+   );
   }
 }
