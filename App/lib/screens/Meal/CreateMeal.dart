@@ -8,74 +8,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'CreateMeal.dart';
 import 'MealPlan.dart';
+import 'ShoppingList.dart';
 
-class menu extends StatefulWidget {
+class createMeal extends StatefulWidget {
   @override
-
-  String category;
-  menu(this.category);
-
-  _menuState createState() => _menuState();
+  _createMealState createState() => _createMealState();
 }
 
-class _menuState extends State<menu> {
+class _createMealState extends State<createMeal> {
 
-  List<String> items = ['Carrot', 'Brocoli', 'Pear', 'Mash'];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(child:
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: Column(
-        children: <Widget>[
-          SizedBox(height:20.0),
-          ExpansionTile(
-            title: Text(widget.category,
-              style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-            children: <Widget>[
-              for ( var i in items ) Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(i),
-                  Text('10')
-                ],
-              ),
-//                ExpansionTile(
-//                  title: Text(
-//                    'Category 1',
-//                  ),
-//                  children: <Widget>[
-//                    ListTile(
-//                      title: Text('Food 1'),
-//                    )
-//                  ],
-//                ),
-//              ],
-
-            ],
-          ),
-        ],
-      ),
-    ),
-    );
-  }
-}
-
-
-
-class ShoppingList extends StatefulWidget {
-  @override
-  _ShoppingListState createState() => _ShoppingListState();
-}
-
-class _ShoppingListState extends State<ShoppingList> {
   StreamSubscription<User> loginStateSubscription;
 
   @override
@@ -95,6 +37,7 @@ class _ShoppingListState extends State<ShoppingList> {
 
   Widget build(BuildContext context) {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
+
     return Scaffold(
 
       backgroundColor: new Color.fromRGBO(61, 210, 204, 1),
@@ -123,7 +66,8 @@ class _ShoppingListState extends State<ShoppingList> {
             CustomListTile(
                 Icons.person,
                 'Profile',
-                    () => {
+                    () =>
+                {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Profile()),
@@ -132,7 +76,8 @@ class _ShoppingListState extends State<ShoppingList> {
             CustomListTile(
                 Icons.group,
                 'Family Group',
-                    () => {
+                    () =>
+                {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => FamilyPage()),
@@ -141,17 +86,20 @@ class _ShoppingListState extends State<ShoppingList> {
             CustomListTile(
                 Icons.fastfood,
                 'Meal Plan',
-                    () => {
+                    () =>
+                {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => mealPlan()),
                   )
                 }),
-            CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
+            CustomListTile(Icons.list, 'Shopping List', () =>
+            {Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ShoppingList()),
             )}),
-            CustomListTile(Icons.add, 'Create New Meal', () => {
+            CustomListTile(Icons.add, 'Create New Meal', () =>
+            {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => createMeal()),
@@ -163,24 +111,8 @@ class _ShoppingListState extends State<ShoppingList> {
         ),
       ),
       appBar: AppBar(
-        title: Text('Shopping List'),
+        title: Text('Create New Meal'),
         centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Container(
-            child: Image(
-              image: AssetImage('assets/logo.png'),
-              height: 50,
-            ),
-          ),
-          Container(child: menu('Fresh Food')),
-          Container(child: menu('Bakery')),
-          Container(child: menu('Frozen Food')),
-          Container(child: menu('Food Cupboard')),
-          Container(),
-          Container(),
-        ]),
       ),
     );
   }

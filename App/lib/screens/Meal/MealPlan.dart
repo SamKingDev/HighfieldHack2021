@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'CreateMeal.dart';
 import 'ShoppingList.dart';
 
 class mealPlan extends StatefulWidget {
@@ -92,6 +93,12 @@ class _mealPlanState extends State<mealPlan> {
               context,
               MaterialPageRoute(builder: (context) => ShoppingList()),
             )}),
+            CustomListTile(Icons.add, 'Create New Meal', () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => createMeal()),
+              )
+            }),
             CustomListTile(Icons.help, 'Tutorial', () => {}),
             CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
           ],
