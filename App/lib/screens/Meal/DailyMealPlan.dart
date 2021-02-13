@@ -14,50 +14,34 @@ class _dailyMealPlanState extends State<dailyMealPlan> {
         title: Text('Your Meal Plan'),
         centerTitle: true,
       ),
-
       body: SingleChildScrollView(
         child: Column(children: [
-          Container(child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image(
-              image: AssetImage('assets/logo.png'),
-              height: 50,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image(
+                image: AssetImage('assets/logo.png'),
+                height: 50,
+              ),
             ),
           ),
-          ),
-          Container(
-            
-          ),
-          Container(
-
-          ),
-          Container(
-
-          ),
-          Container(
-
-          ),
-          Container(
-
-          ),
-          Container(
-
-          ),
-          Container(
-
-          ),
+          Container(child: mealTile((){}),),
+          Container(child: mealTile((){}),),
+          Container(child: mealTile((){}),),
+          Container(),
+          Container(),
+          Container(),
+          Container(),
         ]),
       ),
     );
   }
 }
 
-
 class mealTile extends StatefulWidget {
-  String date;
   Function onTap;
 
-  mealTile(this.date, this.onTap);
+  mealTile(this.onTap);
 
   @override
   _mealTile createState() => _mealTile();
@@ -75,27 +59,7 @@ class _mealTile extends State<mealTile> {
         child: InkWell(
           splashColor: Colors.lightBlueAccent,
           onTap: widget.onTap,
-          child: Container(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(widget.date,
-                          style: TextStyle(
-                            fontSize: 20.0,
-                          )
-                      ),
-                    ),
-                  ],
-                ),
-                Icon(Icons.arrow_right),
-              ],
-            ),
-          ),
+          child: Container(child: Text('Drop Down Box'),),
         ),
       ),
     );
