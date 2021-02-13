@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
+import 'package:famealy/screens/Meal/MealPlan.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,7 +91,12 @@ class _ProfileState extends State<Profile> {
                     MaterialPageRoute(builder: (context) => FamilyPage()),
                   )
                 }),
-            CustomListTile(Icons.fastfood, 'Meal Plan', ()=>{}),
+            CustomListTile(Icons.fastfood, 'Meal Plan', ()=>{
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => mealPlan()),
+              )
+            }),
             CustomListTile(Icons.list, 'Shopping List', ()=>{}),
             CustomListTile(Icons.help, 'Tutorial', ()=>{}),
             CustomListTile(Icons.logout, 'Logout', ()=>{authBloc.logout()}),
@@ -148,7 +154,7 @@ class _ProfileState extends State<Profile> {
 }
 
 
-class CustomListTile extends StatelessWidget{
+class CustomListTile extends StatefulWidget{
 
   IconData icon;
   String text;
@@ -156,6 +162,11 @@ class CustomListTile extends StatelessWidget{
 
   CustomListTile(this.icon, this.text, this.onTap);
 
+  @override
+  _CustomListTileState createState() => _CustomListTileState();
+}
+
+class _CustomListTileState extends State<CustomListTile> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -167,7 +178,7 @@ class CustomListTile extends StatelessWidget{
         ),
         child: InkWell(
           splashColor: Colors.lightBlueAccent,
-          onTap: onTap,
+          onTap: widget.onTap,
           child: Container(
             height: 50,
             child: Row(
@@ -175,10 +186,10 @@ class CustomListTile extends StatelessWidget{
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Icon(icon),
+                  Icon(widget.icon),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(text,
+                    child: Text(widget.text,
                     style: TextStyle(
                       fontSize: 16.0
                     ),
