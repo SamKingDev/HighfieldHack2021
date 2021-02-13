@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
+import 'package:famealy/screens/Meal/MealPlan.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -101,16 +102,22 @@ class _ProfileState extends State<Profile> {
             CustomListTile(
                 Icons.group,
                 'Family Group',
-                () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => FamilyPage()),
-                      )
-                    }),
-            CustomListTile(Icons.fastfood, 'Meal Plan', () => {}),
-            CustomListTile(Icons.list, 'Shopping List', () => {}),
-            CustomListTile(Icons.help, 'Tutorial', () => {}),
-            CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
+                    () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FamilyPage()),
+                  )
+                }),
+            CustomListTile(Icons.fastfood, 'Meal Plan', ()=>{
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => mealPlan()),
+              )
+            }),
+            CustomListTile(Icons.list, 'Shopping List', ()=>{}),
+            CustomListTile(Icons.help, 'Tutorial', ()=>{}),
+            CustomListTile(Icons.logout, 'Logout', ()=>{authBloc.logout()}),
+
           ],
         ),
       ),
@@ -186,13 +193,18 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-class CustomListTile extends StatelessWidget {
+class CustomListTile extends StatefulWidget{
   IconData icon;
   String text;
   Function onTap;
 
   CustomListTile(this.icon, this.text, this.onTap);
 
+  @override
+  _CustomListTileState createState() => _CustomListTileState();
+}
+
+class _CustomListTileState extends State<CustomListTile> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -203,21 +215,21 @@ class CustomListTile extends StatelessWidget {
             border: Border(bottom: BorderSide(color: Colors.grey[400]))),
         child: InkWell(
           splashColor: Colors.lightBlueAccent,
-          onTap: onTap,
+          onTap: widget.onTap,
           child: Container(
             height: 50,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(icon),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        text,
-                        style: TextStyle(fontSize: 16.0),
-                      ),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(widget.icon),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(widget.text,
+                    style: TextStyle(
+                      fontSize: 16.0
+                    ),
                     ),
                   ],
                 ),
@@ -230,8 +242,8 @@ class CustomListTile extends StatelessWidget {
     );
   }
 }
-
-class CustomProfileTile extends StatelessWidget {
+              
+class CustomProfileTile extends StatefulWidget{
   IconData icon;
   String text;
   String content;
@@ -239,32 +251,40 @@ class CustomProfileTile extends StatelessWidget {
   CustomProfileTile(this.icon, this.text, this.content);
 
   @override
+  _CustomProfileTileState createState() => _CustomProfileTileState();
+}
+
+class _CustomProfileTileState extends State<CustomProfileTile> {
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
       child: Container(
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
-        child: Container(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(icon),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      text,
-                      style: TextStyle(fontSize: 16.0),
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))
+        ),
+          child: Container(
+            height: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(widget.icon),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(widget.text,
+                        style: TextStyle(
+                            fontSize: 16.0
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Text(content),
-            ],
+                  ],
+                ),
+                Text(widget.content),
+              ],
+            ),
           ),
         ),
       ),
