@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'CreateMeal.dart';
-import 'MealPlan.dart';
+import 'MealPlans.dart';
 
 class menu extends StatefulWidget {
   @override
@@ -144,7 +144,7 @@ class _ShoppingListState extends State<ShoppingList> {
                     () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => mealPlan()),
+                    MaterialPageRoute(builder: (context) => MealPlans()),
                   )
                 }),
             CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(

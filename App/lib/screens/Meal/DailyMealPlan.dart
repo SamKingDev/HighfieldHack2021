@@ -68,9 +68,9 @@ class _mealTile extends State<mealTile> {
             iconSize: 24,
             elevation: 16,
             style: TextStyle(
-              color: Colors.deepPurple
+                color: Colors.deepPurple
             ),
-            underline: Container(
+              underline: Container(
               height: 2,
               color: Colors.deepPurple
             ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
+import 'package:famealy/screens/Meal/CreateMeal.dart';
 import 'package:famealy/screens/Meal/GenerateMealPlan.dart';
 import 'package:famealy/screens/Meal/SelectDay.dart';
 import 'package:famealy/screens/login/login_screen.dart';
@@ -9,16 +10,14 @@ import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'CreateMeal.dart';
 import 'ShoppingList.dart';
 
-class mealPlan extends StatefulWidget {
+class MealPlans extends StatefulWidget {
   @override
-  _mealPlanState createState() => _mealPlanState();
+  _MealPlansState createState() => _MealPlansState();
 }
 
-class _mealPlanState extends State<mealPlan> {
+class _MealPlansState extends State<MealPlans> {
 
   StreamSubscription<User> loginStateSubscription;
 
@@ -86,7 +85,7 @@ class _mealPlanState extends State<mealPlan> {
                     () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => mealPlan()),
+                    MaterialPageRoute(builder: (context) => MealPlans()),
                   )
                 }),
             CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(

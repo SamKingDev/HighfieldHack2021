@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'MealPlan.dart';
+import 'MealPlans.dart';
 import 'ShoppingList.dart';
 
 class createMeal extends StatefulWidget {
@@ -90,7 +90,7 @@ class _createMealState extends State<createMeal> {
                 {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => mealPlan()),
+                    MaterialPageRoute(builder: (context) => MealPlans()),
                   )
                 }),
             CustomListTile(Icons.list, 'Shopping List', () =>
