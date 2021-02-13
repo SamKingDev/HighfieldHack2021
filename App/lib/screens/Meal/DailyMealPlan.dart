@@ -1,41 +1,50 @@
-import 'package:famealy/screens/Meal/SelectDay.dart';
 import 'package:flutter/material.dart';
 
-class mealPlan extends StatefulWidget {
+class dailyMealPlan extends StatefulWidget {
   @override
-  _mealPlanState createState() => _mealPlanState();
+  _dailyMealPlanState createState() => _dailyMealPlanState();
 }
 
-class _mealPlanState extends State<mealPlan> {
+class _dailyMealPlanState extends State<dailyMealPlan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: new Color.fromRGBO(61, 210, 204, 1),
       appBar: AppBar(
-        title: Text('Choose Week'),
+        title: Text('Your Meal Plan'),
         centerTitle: true,
       ),
+
       body: SingleChildScrollView(
         child: Column(children: [
-          Container(child: Image(
-            image: AssetImage('assets/logo.png'),
-            height: 50,
+          Container(child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image(
+              image: AssetImage('assets/logo.png'),
+              height: 50,
+            ),
           ),
           ),
           Container(
-              child: DateListTile('date1', (){redirect(context);})
+
           ),
           Container(
-              child: DateListTile('date2', (){redirect(context);})
+
           ),
           Container(
-              child: DateListTile('date3', (){redirect(context);})
+
           ),
           Container(
-              child: DateListTile('date4', (){redirect(context);})
+
           ),
           Container(
-              child: DateListTile('date5', (){redirect(context);})
+
+          ),
+          Container(
+
+          ),
+          Container(
+
           ),
         ]),
       ),
@@ -43,24 +52,18 @@ class _mealPlanState extends State<mealPlan> {
   }
 }
 
-Function redirect(context){
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => selectDay()),
-  );
-}
 
-class DateListTile extends StatefulWidget {
+class mealTile extends StatefulWidget {
   String date;
   Function onTap;
 
-  DateListTile(this.date, this.onTap);
+  mealTile(this.date, this.onTap);
 
   @override
-  _DateListTile createState() => _DateListTile();
+  _mealTile createState() => _mealTile();
 }
 
-class _DateListTile extends State<DateListTile> {
+class _mealTile extends State<mealTile> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -82,11 +85,11 @@ class _DateListTile extends State<DateListTile> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(widget.date,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      )
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          )
                       ),
-                      ),
+                    ),
                   ],
                 ),
                 Icon(Icons.arrow_right),

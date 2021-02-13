@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
         );
       } else {
         DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
+            FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
         userId = fbUser.uid;
         documentReference.snapshots().listen((event) {
           setState(() {
@@ -46,7 +46,8 @@ class _ProfileState extends State<Profile> {
             if (event.data()["familyId"] != null &&
                 event.data()["familyId"] != "") {
               DocumentReference familyReference = FirebaseFirestore.instance
-                  .collection('families').doc(event.data()["familyId"]);
+                  .collection('families')
+                  .doc(event.data()["familyId"]);
               familyReference.snapshots().listen((fEvent) {
                 setState(() {
                   if (!mounted) return;
@@ -69,135 +70,140 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     return Scaffold(
-      backgroundColor: new Color.fromRGBO(61, 210, 204, 1),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: <Color>[Colors.lightBlueAccent, Colors.blue])),
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Material(
-                      elevation: 20,
-                      child: Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Image.asset('assets/logo.png'),
+        backgroundColor: new Color.fromRGBO(61, 210, 204, 1),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: <Color>[Colors.lightBlueAccent, Colors.blue])),
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Material(
+                        elevation: 20,
+                        child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Image.asset('assets/logo.png'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              CustomListTile(
+                  Icons.person,
+                  'Profile',
+                  () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Profile()),
+                        )
+                      }),
+              CustomListTile(
+                  Icons.group,
+                  'Family Group',
+                  () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FamilyPage()),
+                        )
+                      }),
+              CustomListTile(
+                  Icons.fastfood,
+                  'Meal Plan',
+                  () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => mealPlan()),
+                        )
+                      }),
+              CustomListTile(Icons.list, 'Shopping List', () => {}),
+              CustomListTile(Icons.help, 'Tutorial', () => {}),
+              CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
+            ],
+          ),
+        ),
+        appBar: AppBar(
+          title: Text('Your Profile'),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Container(
+              child: Image(
+                image: AssetImage('assets/logo.png'),
+                height: 50,
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('assets/profile.png'),
+                    radius: 50.0,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              child: Column(
+                children: [
+                  CustomProfileTile(Icons.account_box, 'Name', fullName),
+                  CustomProfileTile(Icons.alternate_email, 'Email', email),
+                  CustomProfileTile(Icons.group, 'Family Group', familyName),
+                  Visibility(
+                    child: ButtonTheme(
+                      height: 20,
+                      child: RaisedButton(
+                        color: Theme.of(context).accentColor,
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/aboutFamily');
+                        }, //
+                        child: Text('Become a family.'),
                       ),
                     ),
-                  ],
-                ),
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    visible: !familyFound,
+                  ),
+                  Visibility(
+                    child: ButtonTheme(
+                      height: 20,
+                      child: RaisedButton(
+                        color: Colors.red,
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(userId)
+                              .update({"familyId": "", "role": ""});
+                        }, //
+                        child: Text('Leave Family.'),
+                      ),
+                    ),
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    visible: familyFound,
+                  ),
+                  CustomProfileTile(
+                      Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
+                  CustomProfileTile(
+                      Icons.announcement, 'Allergies', 'FIODJFIJSD'),
+                  SizedBox(height: 20),
+                ],
               ),
             ),
-            CustomListTile(
-                Icons.person,
-                'Profile',
-                    () =>
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Profile()),
-                  )
-                }),
-            CustomListTile(
-                Icons.group,
-                'Family Group',
-                    () =>
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FamilyPage()),
-                  )
-                }),
-            CustomListTile(Icons.fastfood, 'Meal Plan', () =>
-            {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => mealPlan()),
-              )
-            }),
-            CustomListTile(Icons.list, 'Shopping List', () => {}),
-            CustomListTile(Icons.help, 'Tutorial', () => {}),
-            CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
-
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        title: Text('Your Profile'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          children: <Widget>[
-            Image(
-              image: AssetImage('assets/logo.png'),
-              height: 50,
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/profile.png'),
-                  radius: 50.0,
-                ),
-              ),
-            ),
-            Column(
-              children: [
-                CustomProfileTile(Icons.account_box, 'Name', fullName),
-                CustomProfileTile(Icons.alternate_email, 'Email', email),
-                CustomProfileTile(Icons.group, 'Family Group', familyName),
-                Visibility(
-                  child: ButtonTheme(
-                    height: 20,
-                    child: RaisedButton(
-                      color: Theme
-                          .of(context)
-                          .accentColor,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/aboutFamily');
-                      }, //
-                      child: Text('Become a family.'),
-                    ),
-                  ),
-                  maintainSize: true,
-                  maintainAnimation: true,
-                  maintainState: true,
-                  visible: !familyFound,
-                ),
-                Visibility(
-                  child: ButtonTheme(
-                    height: 20,
-                    child: RaisedButton(
-                      color: Colors.red,
-                      onPressed: () {
-                        FirebaseFirestore.instance.collection("users").doc(
-                            userId).update({"familyId": "", "role": ""});
-                      }, //
-                      child: Text('Leave Family.'),
-                    ),
-                  ),
-                  maintainSize: true,
-                  maintainAnimation: true,
-                  maintainState: true,
-                  visible: familyFound,
-                ),
-                CustomProfileTile(
-                    Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
-                CustomProfileTile(
-                    Icons.announcement, 'Allergies', 'FIODJFIJSD'),
-                SizedBox(height: 20),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+            Container(),
+            Container(),
+            Container(),
+            Container(),
+          ]),
+        ));
   }
 }
 
@@ -234,10 +240,9 @@ class _CustomListTileState extends State<CustomListTile> {
                     Icon(widget.icon),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(widget.text,
-                        style: TextStyle(
-                            fontSize: 16.0
-                        ),
+                      child: Text(
+                        widget.text,
+                        style: TextStyle(fontSize: 16.0),
                       ),
                     )
                   ],
@@ -271,8 +276,7 @@ class _CustomProfileTileState extends State<CustomProfileTile> {
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
       child: Container(
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[400]))
-        ),
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
         child: Container(
           height: 50,
           child: Row(
@@ -283,10 +287,9 @@ class _CustomProfileTileState extends State<CustomProfileTile> {
                   Icon(widget.icon),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(widget.text,
-                      style: TextStyle(
-                          fontSize: 16.0
-                      ),
+                    child: Text(
+                      widget.text,
+                      style: TextStyle(fontSize: 16.0),
                     ),
                   ),
                 ],
