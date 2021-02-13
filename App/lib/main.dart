@@ -2,6 +2,7 @@ import 'package:famealy/screens/Family/abooutFamily.dart';
 import 'package:famealy/screens/Family/createFamily.dart';
 import 'package:famealy/screens/Family/joinFamily.dart';
 import 'package:famealy/screens/Meal/MealPlan.dart';
+import 'package:famealy/screens/Meal/ShoppingList.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,7 @@ void main() async {
         '/createFamily': (context) => createFamily(),
         '/joinFamily' : (context) => joinFamily(),
         '/mealPlan' : (context) => mealPlan(),
+        '/shoppinglist':(context)=>ShoppingList(),
       },
     ),
   ));
