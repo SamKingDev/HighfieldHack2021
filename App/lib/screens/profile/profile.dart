@@ -97,7 +97,7 @@ class _ProfileState extends State<Profile> {
           children: <Widget>[
             Image(image: AssetImage(
               'assets/logo.png'),
-              height: 60,
+              height: 50,
             ),
             Center(
               child: Padding(
@@ -110,11 +110,22 @@ class _ProfileState extends State<Profile> {
             ),
             Column(
               children: [
-                CustomRow('Name:', '...'),
+                CustomProfileTile(Icons.account_box, 'Name', 'Emma'),
+                CustomProfileTile(Icons.alternate_email, 'Email', 'Group 1'),
+                CustomProfileTile(Icons.group, 'Family Group', 'Group 1'),
+                ButtonTheme(
+                  height: 20,
+                  child: RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/aboutFamily');
+                    }, //
+                    child: Text('What are family groups?'),
+                  ),
+                ),
+                CustomProfileTile(Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
+                CustomProfileTile(Icons.announcement, 'Allergies', 'FIODJFIJSD'),
                 SizedBox(height: 20),
-                FamilyCustomRow('Family Group:', '...'),
-                CustomRow('Dietry Preferences:', '...'),
-                CustomRow('Allergies:', '...'),
               ],
             ),
           ],
@@ -123,104 +134,6 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-class FamilyCustomRow extends StatelessWidget {
-
-  String text;
-  String content;
-
-  FamilyCustomRow(this.text, this.content);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: labelBoxDecoration(),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: labelBoxDecoration(),
-                child: Center(
-                  child: Text(
-                    content,
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        ButtonTheme(
-          height: 20,
-          child: RaisedButton(
-            color: Theme.of(context).accentColor,
-            onPressed: () {
-              Navigator.pushNamed(context, '/aboutFamily');
-            }, //
-            child: Text('What are family groups?'),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomRow extends StatelessWidget {
-
-  String text;
-  String content;
-
-  CustomRow(this.text, this.content);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          decoration: labelBoxDecoration(),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 15,
-            ),
-          ),
-        ),
-        SizedBox(width: 20),
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: labelBoxDecoration(),
-            child: Center(
-              child: Text(
-                content,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(height: 70),
-      ],
-    );
-  }
-}
-
 
 
 class CustomListTile extends StatelessWidget{
@@ -272,16 +185,46 @@ class CustomListTile extends StatelessWidget{
 }
 
 
-BoxDecoration labelBoxDecoration() {
-  return BoxDecoration(
-    color: Colors.white,
-    border: Border.all(
-        width: 1.0,
-      color: Colors.grey[800]
-    ),
-    borderRadius: BorderRadius.all(
-        Radius.circular(15.0) //                 <--- border radius here
-    ),
-  );
-}
+class CustomProfileTile extends StatelessWidget{
 
+  IconData icon;
+  String text;
+  String content;
+
+  CustomProfileTile(this.icon, this.text, this.content);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))
+        ),
+          child: Container(
+            height: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(icon),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(text,
+                        style: TextStyle(
+                            fontSize: 16.0
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Text(content),
+              ],
+            ),
+          ),
+      ),
+    );
+  }
+}
