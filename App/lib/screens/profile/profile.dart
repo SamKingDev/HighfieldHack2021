@@ -1,5 +1,13 @@
+import 'dart:async';
+
+import 'package:famealy/blocs/auth_bloc.dart';
+import 'package:famealy/screens/Family/family.dart';
+import 'package:famealy/screens/login/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -7,8 +15,37 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  StreamSubscription<User> loginStateSubscription;
+  var email;
+  var fullName;
+
+  @override
+  void initState() {
+    var authBloc = Provider.of<AuthBloc>(context, listen: false);
+    loginStateSubscription = authBloc.currentUser.listen((fbUser) {
+      if (fbUser == null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+        );
+      } else {
+        DocumentReference documentReference = FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
+
+        documentReference.snapshots().listen((event) {
+          setState(() {
+            email = event.data()["email"];
+            fullName = event.data()["full_name"];
+          });
+        });
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var authBloc = Provider.of<AuthBloc>(context, listen: false);
     return Scaffold(
       backgroundColor: new Color.fromRGBO(61,210,204,1),
       drawer: Drawer(
@@ -35,12 +72,28 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
             ),
-            CustomListTile(Icons.person, 'Profile', ()=>{}),
-            CustomListTile(Icons.group, 'Family Group', ()=>{}),
+            CustomListTile(
+                Icons.person,
+                'Profile',
+                    () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Profile()),
+                  )
+                }),
+            CustomListTile(
+                Icons.group,
+                'Family Group',
+                    () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FamilyPage()),
+                  )
+                }),
             CustomListTile(Icons.fastfood, 'Meal Plan', ()=>{}),
             CustomListTile(Icons.list, 'Shopping List', ()=>{}),
             CustomListTile(Icons.help, 'Tutorial', ()=>{}),
-            CustomListTile(Icons.logout, 'Logout', ()=>{}),
+            CustomListTile(Icons.logout, 'Logout', ()=>{authBloc.logout()}),
           ],
         ),
       ),
@@ -53,56 +106,43 @@ class _ProfileState extends State<Profile> {
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Image(image: AssetImage(
               'assets/logo.png'),
-              height: 60,
+              height: 50,
             ),
-            CustomRow('First Name:', '...'),
-            CustomRow('Last Name:', '...'),
-            CustomRow('Family Group:', '...'),
-            CustomRow('Dietry Preferences:', '...'),
-            CustomRow('Allergies:', '...'),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/profile.png'),
+                  radius: 50.0,
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                CustomProfileTile(Icons.account_box, 'Name', 'Emma'),
+                CustomProfileTile(Icons.alternate_email, 'Email', 'Group 1'),
+                CustomProfileTile(Icons.group, 'Family Group', 'Group 1'),
+                ButtonTheme(
+                  height: 20,
+                  child: RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/aboutFamily');
+                    }, //
+                    child: Text('What are family groups?'),
+                  ),
+                ),
+                CustomProfileTile(Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
+                CustomProfileTile(Icons.announcement, 'Allergies', 'FIODJFIJSD'),
+                SizedBox(height: 20),
+              ],
+            ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class CustomRow extends StatelessWidget {
-
-  String text;
-  String content;
-
-  CustomRow(this.text, this.content);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          decoration: labelBoxDecoration(),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 15,
-            ),
-          ),
-        ),
-        Container(
-          decoration: contentBoxDecoration(),
-          child: Text(
-            content,
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -157,26 +197,51 @@ class CustomListTile extends StatelessWidget{
 }
 
 
-BoxDecoration labelBoxDecoration() {
-  return BoxDecoration(
-    color: Colors.grey[400],
-    border: Border.all(
-        width: 3.0,
-      color: Colors.grey[800]
-    ),
-    borderRadius: BorderRadius.all(
-        Radius.circular(15.0) //                 <--- border radius here
-    ),
-  );
+class CustomProfileTile extends StatefulWidget{
+
+  IconData icon;
+  String text;
+  String content;
+
+  CustomProfileTile(this.icon, this.text, this.content);
+
+  @override
+  _CustomProfileTileState createState() => _CustomProfileTileState();
 }
 
-BoxDecoration contentBoxDecoration() {
-  return BoxDecoration(
-    border: Border(
-      bottom: BorderSide( //                   <--- left side
-        color: Colors.grey[500],
-        width: 3.0,
+class _CustomProfileTileState extends State<CustomProfileTile> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))
+        ),
+          child: Container(
+            height: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(widget.icon),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(widget.text,
+                        style: TextStyle(
+                            fontSize: 16.0
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Text(widget.content),
+              ],
+            ),
+          ),
       ),
-    ),
-  );
+    );
+  }
 }

@@ -33,6 +33,7 @@ dependencies:
   provider: ^4.3.3
   firebase_auth: ^0.20.0+1
   flutter_signin_button: ^1.1.0
+  cloud_firestore: ^0.16.0
 
 dev_dependencies:
   flutter_test:
