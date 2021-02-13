@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
-import 'package:famealy/screens/Meal/MealPlan.dart';
 import 'package:famealy/screens/Meal/ShoppingList.dart';
+import 'package:famealy/screens/Meal/MealPlans.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +43,6 @@ class _ProfileState extends State<Profile> {
             if (!mounted) return;
             email = event.data()["email"];
             fullName = event.data()["full_name"];
-            print(event.data()["familyId"]);
             if (event.data()["familyId"] != null &&
                 event.data()["familyId"] != "") {
               DocumentReference familyReference = FirebaseFirestore.instance
@@ -118,7 +117,7 @@ class _ProfileState extends State<Profile> {
                   () => {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => mealPlan()),
+                          MaterialPageRoute(builder: (context) => MealPlans()),
                         )
                       }),
               CustomListTile(Icons.list, 'Shopping List', () => {

@@ -83,7 +83,7 @@ class _FamilyPageState extends State<FamilyPage> {
                   () => {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => mealPlan()),
+                          MaterialPageRoute(builder: (context) => MealPlans()),
                         )
                       }),
               CustomListTile(
