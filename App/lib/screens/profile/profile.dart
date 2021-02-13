@@ -185,7 +185,7 @@ class CustomListTile extends StatelessWidget{
 }
 
 
-class CustomProfileTile extends StatelessWidget{
+class CustomProfileTile extends StatefulWidget{
 
   IconData icon;
   String text;
@@ -193,6 +193,11 @@ class CustomProfileTile extends StatelessWidget{
 
   CustomProfileTile(this.icon, this.text, this.content);
 
+  @override
+  _CustomProfileTileState createState() => _CustomProfileTileState();
+}
+
+class _CustomProfileTileState extends State<CustomProfileTile> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -209,10 +214,10 @@ class CustomProfileTile extends StatelessWidget{
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Icon(icon),
+                    Icon(widget.icon),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(text,
+                      child: Text(widget.text,
                         style: TextStyle(
                             fontSize: 16.0
                         ),
@@ -220,7 +225,7 @@ class CustomProfileTile extends StatelessWidget{
                     ),
                   ],
                 ),
-                Text(content),
+                Text(widget.content),
               ],
             ),
           ),
