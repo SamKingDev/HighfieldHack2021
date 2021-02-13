@@ -35,7 +35,7 @@ class _aboutFamilyState extends State<aboutFamily> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: new Color.fromRGBO(61, 210, 204, 1),
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text('Families Menu'),

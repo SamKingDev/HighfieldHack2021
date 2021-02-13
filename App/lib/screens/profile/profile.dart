@@ -99,10 +99,18 @@ class _ProfileState extends State<Profile> {
               'assets/logo.png'),
               height: 60,
             ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/profile.png'),
+                  radius: 50.0,
+                ),
+              ),
+            ),
             Column(
               children: [
-                CustomRow('First Name:', '...'),
-                CustomRow('Last Name:', '...'),
+                CustomRow('Name:', '...'),
                 SizedBox(height: 20),
                 FamilyCustomRow('Family Group:', '...'),
                 CustomRow('Dietry Preferences:', '...'),
