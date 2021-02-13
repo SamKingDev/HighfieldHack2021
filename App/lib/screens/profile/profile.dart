@@ -16,8 +16,11 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   StreamSubscription<User> loginStateSubscription;
-  var email;
-  var fullName;
+  var email = "";
+  var fullName = "";
+  var userId = "";
+  var familyName = "";
+  bool familyFound = false;
 
   @override
   void initState() {
@@ -30,12 +33,28 @@ class _ProfileState extends State<Profile> {
           ),
         );
       } else {
-        DocumentReference documentReference = FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
-
+        DocumentReference documentReference =
+            FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
+        userId = fbUser.uid;
         documentReference.snapshots().listen((event) {
           setState(() {
+            if (!mounted) return;
             email = event.data()["email"];
             fullName = event.data()["full_name"];
+            print(event.data()["familyId"]);
+            if (event.data()["familyId"] != null && event.data()["familyId"] != "") {
+              DocumentReference familyReference = FirebaseFirestore.instance.collection('families').doc(event.data()["familyId"]);
+              familyReference.snapshots().listen((fEvent) {
+                setState(() {
+                  if (!mounted) return;
+                  familyName = fEvent.data()["name"];
+                  familyFound = true;
+                });
+              });
+            } else {
+              familyName = "No current family";
+              familyFound = false;
+            }
           });
         });
       }
@@ -47,68 +66,64 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     return Scaffold(
-      backgroundColor: new Color.fromRGBO(61,210,204,1),
+      backgroundColor: new Color.fromRGBO(61, 210, 204, 1),
       drawer: Drawer(
         child: ListView(
-          children: <Widget> [
+          children: <Widget>[
             DrawerHeader(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: <Color>[
-                      Colors.lightBlueAccent,
-                      Colors.blue
-                    ])
-                ),
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Material(
-                        elevation: 20,
-                        child: Padding(padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: <Color>[Colors.lightBlueAccent, Colors.blue])),
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Material(
+                      elevation: 20,
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
                         child: Image.asset('assets/logo.png'),
                       ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
             ),
             CustomListTile(
                 Icons.person,
                 'Profile',
-                    () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Profile()),
-                  )
-                }),
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Profile()),
+                      )
+                    }),
             CustomListTile(
                 Icons.group,
                 'Family Group',
-                    () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FamilyPage()),
-                  )
-                }),
-            CustomListTile(Icons.fastfood, 'Meal Plan', ()=>{}),
-            CustomListTile(Icons.list, 'Shopping List', ()=>{}),
-            CustomListTile(Icons.help, 'Tutorial', ()=>{}),
-            CustomListTile(Icons.logout, 'Logout', ()=>{authBloc.logout()}),
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FamilyPage()),
+                      )
+                    }),
+            CustomListTile(Icons.fastfood, 'Meal Plan', () => {}),
+            CustomListTile(Icons.list, 'Shopping List', () => {}),
+            CustomListTile(Icons.help, 'Tutorial', () => {}),
+            CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
           ],
         ),
       ),
       appBar: AppBar(
-        title: Text(
-            'Your Profile'
-        ),
+        title: Text('Your Profile'),
         centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: Column(
           children: <Widget>[
-            Image(image: AssetImage(
-              'assets/logo.png'),
+            Image(
+              image: AssetImage('assets/logo.png'),
               height: 50,
             ),
             Center(
@@ -122,21 +137,45 @@ class _ProfileState extends State<Profile> {
             ),
             Column(
               children: [
-                CustomProfileTile(Icons.account_box, 'Name', 'Emma'),
-                CustomProfileTile(Icons.alternate_email, 'Email', 'Group 1'),
-                CustomProfileTile(Icons.group, 'Family Group', 'Group 1'),
-                ButtonTheme(
-                  height: 20,
-                  child: RaisedButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/aboutFamily');
-                    }, //
-                    child: Text('What are family groups?'),
+                CustomProfileTile(Icons.account_box, 'Name', fullName),
+                CustomProfileTile(Icons.alternate_email, 'Email', email),
+                CustomProfileTile(Icons.group, 'Family Group', familyName),
+                Visibility(
+                  child: ButtonTheme(
+                    height: 20,
+                    child: RaisedButton(
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/aboutFamily');
+                      }, //
+                      child: Text('Become a family.'),
+                    ),
                   ),
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  visible: !familyFound,
                 ),
-                CustomProfileTile(Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
-                CustomProfileTile(Icons.announcement, 'Allergies', 'FIODJFIJSD'),
+                Visibility(
+                  child: ButtonTheme(
+                    height: 20,
+                    child: RaisedButton(
+                      color: Colors.red,
+                      onPressed: () {
+                        FirebaseFirestore.instance.collection("users").doc(userId).update({"familyId": "", "role": ""});
+                      }, //
+                      child: Text('Leave Family.'),
+                    ),
+                  ),
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  visible: familyFound,
+                ),
+                CustomProfileTile(
+                    Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
+                CustomProfileTile(
+                    Icons.announcement, 'Allergies', 'FIODJFIJSD'),
                 SizedBox(height: 20),
               ],
             ),
@@ -147,9 +186,7 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-
-class CustomListTile extends StatelessWidget{
-
+class CustomListTile extends StatelessWidget {
   IconData icon;
   String text;
   Function onTap;
@@ -163,42 +200,38 @@ class CustomListTile extends StatelessWidget{
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
       child: Container(
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey[400]))
-        ),
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
         child: InkWell(
           splashColor: Colors.lightBlueAccent,
           onTap: onTap,
           child: Container(
             height: 50,
             child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(icon),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(text,
-                    style: TextStyle(
-                      fontSize: 16.0
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(icon),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        text,
+                        style: TextStyle(fontSize: 16.0),
+                      ),
                     ),
-                    ),
-                  ),
-                ],
-              ),
-              Icon(Icons.arrow_right),
-            ],
+                  ],
+                ),
+                Icon(Icons.arrow_right),
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );
   }
 }
 
-
-class CustomProfileTile extends StatelessWidget{
-
+class CustomProfileTile extends StatelessWidget {
   IconData icon;
   String text;
   String content;
@@ -212,30 +245,28 @@ class CustomProfileTile extends StatelessWidget{
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
       child: Container(
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[400]))
-        ),
-          child: Container(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(icon),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(text,
-                        style: TextStyle(
-                            fontSize: 16.0
-                        ),
-                      ),
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
+        child: Container(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(icon),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      text,
+                      style: TextStyle(fontSize: 16.0),
                     ),
-                  ],
-                ),
-                Text(content),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              Text(content),
+            ],
           ),
+        ),
       ),
     );
   }
