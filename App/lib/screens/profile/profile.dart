@@ -190,11 +190,9 @@ class _ProfileState extends State<Profile> {
                     maintainState: true,
                     visible: familyFound,
                   ),
-                  CustomProfileTile(
-                      Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
-                  CustomProfileTile(
-                      Icons.announcement, 'Allergies', 'FIODJFIJSD'),
-                  SizedBox(height: 20),
+                  dietryRequirementsTile(
+                          () {}, Icons.assignment, 'Dietry Requirements'),
+                  allergyTile(() {}, Icons.announcement, 'Allergies'),
                 ],
               ),
             ),
@@ -295,6 +293,168 @@ class _CustomProfileTileState extends State<CustomProfileTile> {
                 ],
               ),
               Text(widget.content),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class dietryRequirementsTile extends StatefulWidget {
+  Function onTap;
+  String requirement;
+  IconData icon;
+  String text;
+
+  dietryRequirementsTile(this.onTap, this.icon, this.text);
+
+  @override
+  _dietryRequirementsTile createState() => _dietryRequirementsTile();
+}
+
+class _dietryRequirementsTile extends State<dietryRequirementsTile> {
+  String selectedValue = 'None';
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
+        child: Container(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(widget.icon),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.text,
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                ],
+              ),
+              DropdownButton<String>(
+                value: selectedValue,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.black),
+                underline: Container(height: 2, color: Colors.black),
+                onChanged: (String newValue) {
+                  setState(() {
+                    selectedValue = newValue;
+                  });
+                },
+                items: <String>['None', 'Vegan', 'Vegetarian', 'Pescetarian']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                      value: value, child: Text(value));
+                }).toList(),
+              ),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class allergyTile extends StatefulWidget {
+  Function onTap;
+  String requirement;
+  IconData icon;
+  String text;
+
+  allergyTile(this.onTap, this.icon, this.text);
+
+  @override
+  _allergyTile createState() => _allergyTile();
+}
+
+class _allergyTile extends State<allergyTile> {
+  String selectedValue = 'None';
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
+        child: Container(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(widget.icon),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.text,
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                ],
+              ),
+              DropdownButton<String>(
+                value: selectedValue,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.black),
+                underline: Container(height: 2, color: Colors.black),
+                onChanged: (String newValue) {
+                  setState(() {
+                    selectedValue = newValue;
+                  });
+                },
+                items: <String>[
+                  'None',
+                  'Gluten',
+                  'Crustaceans',
+                  'Eggs',
+                  'Fish',
+                  'Peanuts',
+                  'Soya',
+                  'Milk',
+                  'Tree Nuts',
+                  'Celery',
+                  'Mustard',
+                  'Sesame',
+                  'Sulphites',
+                  'Lupin',
+                  'Molluscs'
+                ].map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                      value: value, child: Text(value));
+                }).toList(),
+              ),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {},
+              ),
             ],
           ),
         ),

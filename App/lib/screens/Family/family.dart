@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Meal/MealPlan.dart';
+import 'package:famealy/screens/Meal/ShoppingList.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -85,7 +86,16 @@ class _FamilyPageState extends State<FamilyPage> {
                           MaterialPageRoute(builder: (context) => mealPlan()),
                         )
                       }),
-              CustomListTile(Icons.list, 'Shopping List', () => {}),
+              CustomListTile(
+                  Icons.list,
+                  'Shopping List',
+                  () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShoppingList()),
+                        )
+                      }),
               CustomListTile(Icons.help, 'Tutorial', () => {}),
               CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
             ],
@@ -125,10 +135,16 @@ class _FamilyPageState extends State<FamilyPage> {
                     Icons.announcement, 'Allergies', 'FIODJFIJSD'),
               ],
             )),
+            Container(),
             Container(
               child: RaisedButton.icon(
                 color: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => mealPlan()),
+                  );
+                },
                 icon: Icon(Icons.fastfood),
                 label: Text('View Weekly Meal Plan'),
               ),
@@ -136,7 +152,12 @@ class _FamilyPageState extends State<FamilyPage> {
             Container(
               child: RaisedButton.icon(
                 color: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShoppingList()),
+                  );
+                },
                 icon: Icon(Icons.list),
                 label: Text('View Shopping List'),
               ),
