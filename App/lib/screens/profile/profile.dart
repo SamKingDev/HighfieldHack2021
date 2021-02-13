@@ -23,29 +23,23 @@ class _ProfileState extends State<Profile> {
                 ),
                 child: Container(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Material(
-                        borderRadius: BorderRadius.all(Radius.circular(60.0)),
-                        elevation: 10,
-                        child: Padding(padding: EdgeInsets.all(8.0),
-                        child: Image.asset('assets/logo.png', width: 80, height: 80),
+                        elevation: 20,
+                        child: Padding(padding: EdgeInsets.all(5.0),
+                        child: Image.asset('assets/logo.png'),
                       ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Famealy Planner',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                        ),),
                       ),
                     ],
                   ),
                 ),
             ),
             CustomListTile(Icons.person, 'Profile', ()=>{}),
-            CustomListTile(Icons.notifications, 'Notifications', ()=>{}),
-            CustomListTile(Icons.settings, 'Settings', ()=>{}),
+            CustomListTile(Icons.group, 'Family Group', ()=>{}),
+            CustomListTile(Icons.fastfood, 'Meal Plan', ()=>{}),
+            CustomListTile(Icons.list, 'Shopping List', ()=>{}),
+            CustomListTile(Icons.help, 'Tutorial', ()=>{}),
             CustomListTile(Icons.logout, 'Logout', ()=>{}),
           ],
         ),
@@ -57,18 +51,19 @@ class _ProfileState extends State<Profile> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(10.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Image(image: AssetImage('assets/logo.png')),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget> [
-                CustomRow('First Name', '...'),
-                CustomRow('Last Name', '...'),
-                CustomRow('Family Group', '...'),
-              ],
+            Image(image: AssetImage(
+              'assets/logo.png'),
+              height: 60,
             ),
+            CustomRow('First Name:', '...'),
+            CustomRow('Last Name:', '...'),
+            CustomRow('Family Group:', '...'),
+            CustomRow('Dietry Preferences:', '...'),
+            CustomRow('Allergies:', '...'),
           ],
         ),
       ),
@@ -86,21 +81,27 @@ class CustomRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 25,
+        Container(
+          padding: EdgeInsets.all(10),
+          decoration: labelBoxDecoration(),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 15,
+            ),
           ),
         ),
-        Text(
-          content,
-          style: TextStyle(
-            fontSize: 25,
+        Container(
+          decoration: contentBoxDecoration(),
+          child: Text(
+            content,
+            style: TextStyle(
+              fontSize: 20,
+            ),
           ),
         ),
-        SizedBox(height: 30.0),
       ],
     );
   }
@@ -153,5 +154,29 @@ class CustomListTile extends StatelessWidget{
       ),
     );
   }
+}
 
+
+BoxDecoration labelBoxDecoration() {
+  return BoxDecoration(
+    color: Colors.grey[400],
+    border: Border.all(
+        width: 3.0,
+      color: Colors.grey[800]
+    ),
+    borderRadius: BorderRadius.all(
+        Radius.circular(15.0) //                 <--- border radius here
+    ),
+  );
+}
+
+BoxDecoration contentBoxDecoration() {
+  return BoxDecoration(
+    border: Border(
+      bottom: BorderSide( //                   <--- left side
+        color: Colors.grey[500],
+        width: 3.0,
+      ),
+    ),
+  );
 }
