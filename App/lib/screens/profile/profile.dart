@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
         );
       } else {
         DocumentReference documentReference =
-            FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
+        FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
         userId = fbUser.uid;
         documentReference.snapshots().listen((event) {
           setState(() {
@@ -43,8 +43,10 @@ class _ProfileState extends State<Profile> {
             email = event.data()["email"];
             fullName = event.data()["full_name"];
             print(event.data()["familyId"]);
-            if (event.data()["familyId"] != null && event.data()["familyId"] != "") {
-              DocumentReference familyReference = FirebaseFirestore.instance.collection('families').doc(event.data()["familyId"]);
+            if (event.data()["familyId"] != null &&
+                event.data()["familyId"] != "") {
+              DocumentReference familyReference = FirebaseFirestore.instance
+                  .collection('families').doc(event.data()["familyId"]);
               familyReference.snapshots().listen((fEvent) {
                 setState(() {
                   if (!mounted) return;
@@ -93,30 +95,33 @@ class _ProfileState extends State<Profile> {
             CustomListTile(
                 Icons.person,
                 'Profile',
-                () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Profile()),
-                      )
-                    }),
+                    () =>
+                {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Profile()),
+                  )
+                }),
             CustomListTile(
                 Icons.group,
                 'Family Group',
-                    () => {
+                    () =>
+                {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => FamilyPage()),
                   )
                 }),
-            CustomListTile(Icons.fastfood, 'Meal Plan', ()=>{
+            CustomListTile(Icons.fastfood, 'Meal Plan', () =>
+            {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => mealPlan()),
               )
             }),
-            CustomListTile(Icons.list, 'Shopping List', ()=>{}),
-            CustomListTile(Icons.help, 'Tutorial', ()=>{}),
-            CustomListTile(Icons.logout, 'Logout', ()=>{authBloc.logout()}),
+            CustomListTile(Icons.list, 'Shopping List', () => {}),
+            CustomListTile(Icons.help, 'Tutorial', () => {}),
+            CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
 
           ],
         ),
@@ -151,7 +156,9 @@ class _ProfileState extends State<Profile> {
                   child: ButtonTheme(
                     height: 20,
                     child: RaisedButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme
+                          .of(context)
+                          .accentColor,
                       onPressed: () {
                         Navigator.pushNamed(context, '/aboutFamily');
                       }, //
@@ -169,7 +176,8 @@ class _ProfileState extends State<Profile> {
                     child: RaisedButton(
                       color: Colors.red,
                       onPressed: () {
-                        FirebaseFirestore.instance.collection("users").doc(userId).update({"familyId": "", "role": ""});
+                        FirebaseFirestore.instance.collection("users").doc(
+                            userId).update({"familyId": "", "role": ""});
                       }, //
                       child: Text('Leave Family.'),
                     ),
@@ -193,7 +201,7 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-class CustomListTile extends StatefulWidget{
+class CustomListTile extends StatefulWidget {
   IconData icon;
   String text;
   Function onTap;
@@ -219,18 +227,19 @@ class _CustomListTileState extends State<CustomListTile> {
           child: Container(
             height: 50,
             child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(widget.icon),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(widget.text,
-                    style: TextStyle(
-                      fontSize: 16.0
-                    ),
-                    ),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(widget.icon),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(widget.text,
+                        style: TextStyle(
+                            fontSize: 16.0
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 Icon(Icons.arrow_right),
@@ -242,8 +251,8 @@ class _CustomListTileState extends State<CustomListTile> {
     );
   }
 }
-              
-class CustomProfileTile extends StatefulWidget{
+
+class CustomProfileTile extends StatefulWidget {
   IconData icon;
   String text;
   String content;
@@ -264,27 +273,26 @@ class _CustomProfileTileState extends State<CustomProfileTile> {
         decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.grey[400]))
         ),
-          child: Container(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(widget.icon),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(widget.text,
-                        style: TextStyle(
-                            fontSize: 16.0
-                        ),
+        child: Container(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(widget.icon),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(widget.text,
+                      style: TextStyle(
+                          fontSize: 16.0
                       ),
                     ),
-                  ],
-                ),
-                Text(widget.content),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              Text(widget.content),
+            ],
           ),
         ),
       ),
