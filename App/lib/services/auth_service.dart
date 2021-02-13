@@ -6,5 +6,5 @@ class AuthService {
   Future<UserCredential> signInWithCredential(AuthCredential credential) =>
   _auth.signInWithCredential(credential);
   Future<void> logout() => _auth.signOut();
-  Stream<User> get curentUser => _auth.authStateChanges();
+  Stream<User> get currentUser => _auth.authStateChanges();
 }
