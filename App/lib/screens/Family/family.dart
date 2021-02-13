@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:famealy/blocs/auth_bloc.dart';
-import 'package:famealy/screens/Meal/MealPlan.dart';
+import 'package:famealy/screens/Meal/MealPlans.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -82,7 +82,7 @@ class _FamilyPageState extends State<FamilyPage> {
                   () => {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => mealPlan()),
+                          MaterialPageRoute(builder: (context) => MealPlans()),
                         )
                       }),
               CustomListTile(Icons.list, 'Shopping List', () => {}),
