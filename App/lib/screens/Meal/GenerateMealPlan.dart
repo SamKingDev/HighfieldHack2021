@@ -32,7 +32,7 @@ class _generateMealPlanState extends State<generateMealPlan> {
       body: SingleChildScrollView(
         child: Column(children: [
           Container(child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             child: Image(
               image: AssetImage('assets/logo.png'),
               height: 50,),),),
@@ -50,7 +50,7 @@ class _generateMealPlanState extends State<generateMealPlan> {
                 RaisedButton(
                   onPressed: () => _selectDate(context), // Refer step 3
                   child: Text(
-                    'Select date',
+                    'Select Starting Date',
                     style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                   ),
@@ -60,7 +60,7 @@ class _generateMealPlanState extends State<generateMealPlan> {
             )
           ),
           SizedBox(
-            height: 50.0,
+            height: 10.0,
           ),
           Container(
             child: RaisedButton.icon(
