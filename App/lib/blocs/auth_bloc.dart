@@ -6,7 +6,7 @@ class AuthBloc {
   final authService = AuthService();
   final googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  Stream<User> get currentUser => authService.curentUser;
+  Stream<User> get currentUser => authService.currentUser;
 
   loginGoogle() async {
     try {
@@ -20,8 +20,12 @@ class AuthBloc {
       final result = await authService.signInWithCredential(credential);
 
       print('${result.user.displayName}');
+
     } catch (e){
       print(e);
     }
+  }
+  logout() {
+    authService.logout();
   }
 }
