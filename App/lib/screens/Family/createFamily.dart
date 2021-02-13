@@ -1,4 +1,11 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famealy/blocs/auth_bloc.dart';
+import 'package:famealy/screens/login/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class createFamily extends StatefulWidget {
   @override
@@ -6,6 +13,27 @@ class createFamily extends StatefulWidget {
 }
 
 class _createFamilyState extends State<createFamily> {
+  final familyNameInput = TextEditingController();
+  StreamSubscription<User> loginStateSubscription;
+  var userId = "";
+
+  @override
+  void initState() {
+    var authBloc = Provider.of<AuthBloc>(context, listen: false);
+    loginStateSubscription = authBloc.currentUser.listen((fbUser) {
+      if (fbUser == null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+        );
+      } else {
+        userId = fbUser.uid;
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +63,17 @@ class _createFamilyState extends State<createFamily> {
             fontSize: 20.0,
             color: Colors.black,
           ),
+          controller: familyNameInput,
         ),
         SizedBox(height: 10),
         RaisedButton.icon(
           color: Colors.white,
-          onPressed: (){}, icon: Icon (Icons.add) , label: Text ('Create new family'),)
+          onPressed: () async {
+            DocumentReference docRef = await FirebaseFirestore.instance.collection('families').add({
+              "name": familyNameInput.text,
+            });
+            FirebaseFirestore.instance.collection("users").doc(userId).update({"familyId": docRef.id, "role": "Creator"});
+          }, icon: Icon (Icons.add) , label: Text ('Create new family'),)
       ],
     ),
     );

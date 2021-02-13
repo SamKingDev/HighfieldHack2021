@@ -34,8 +34,6 @@ class _joinFamilyState extends State<joinFamily> {
           ),
         );
       } else {
-        DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
         userId = fbUser.uid;
       }
     });
