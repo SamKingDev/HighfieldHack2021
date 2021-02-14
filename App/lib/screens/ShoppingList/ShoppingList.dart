@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
 import 'package:famealy/screens/Meal/CreateMeal.dart';
+import 'package:famealy/screens/Meal/MealPlans.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -115,6 +116,7 @@ class _ShoppingListState extends State<ShoppingList> {
         foodMap.putIfAbsent(f.id, () => f);
       }
     }
+    print(foodMap.length);
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     return Scaffold(
 
@@ -165,7 +167,7 @@ class _ShoppingListState extends State<ShoppingList> {
                     () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShoppingListMealPlans()),
+                    MaterialPageRoute(builder: (context) => MealPlans()),
                   )
                 }),
             CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
