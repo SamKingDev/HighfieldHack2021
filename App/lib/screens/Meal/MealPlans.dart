@@ -86,22 +86,31 @@ class _MealPlansState extends State<MealPlans> {
             CustomListTile(
                 Icons.fastfood,
                 'Meal Plan',
-                    () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MealPlans()),
-                  )
-                }),
-            CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ShoppingListMealPlans()),
-            )}),
-            CustomListTile(Icons.add, 'Create New Meal', () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => createMeal()),
-              )
-            }),
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MealPlans()),
+                      )
+                    }),
+            CustomListTile(
+                Icons.list,
+                'Shopping List',
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ShoppingListMealPlans()),
+                      )
+                    }),
+            CustomListTile(
+                Icons.add,
+                'Create New Meal',
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => createMeal()),
+                      )
+                    }),
             CustomListTile(Icons.help, 'Tutorial', () => {}),
             CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
           ],
@@ -126,6 +135,18 @@ class _MealPlansState extends State<MealPlans> {
               height: 50,
             ),
           ),
+          Container(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+            'View or Create new meal plans!',
+            style: TextStyle(
+                  fontSize: 20.0,
+            ),
+          ),
+                ),
+              )),
           Container(child: MealPlanDisplay())
         ]),
       ),
@@ -225,8 +246,8 @@ class _MealPlanDisplayState extends State<MealPlanDisplay> {
                 .collection('mealplan')
                 .get()
                 .then((value) => setState(() {
-                        docs = value.docs;
-                      }));
+                      docs = value.docs;
+                    }));
           });
         });
       }
@@ -242,13 +263,16 @@ class _MealPlanDisplayState extends State<MealPlanDisplay> {
           children: [
             DateListTile(
                 new DateFormat.yMMMMd('en_US')
-                    .format(docs[i]["startDate"].toDate()),
-                () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => selectDay(docs[i].id, docs[i]['startDate'].toDate(), docs[i]['endDate'].toDate())),
-                  );
-                }),
+                    .format(docs[i]["startDate"].toDate()), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => selectDay(
+                        docs[i].id,
+                        docs[i]['startDate'].toDate(),
+                        docs[i]['endDate'].toDate())),
+              );
+            }),
           ],
         ));
       }

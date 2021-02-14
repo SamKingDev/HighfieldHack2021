@@ -184,45 +184,45 @@ class _createMealState extends State<createMeal> {
                           fontSize: 20.0,
                         )),
                   ),
+
+                  DropdownButton<String>(
+                    value: mealTypeSelectedValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.black),
+                    underline: Container(height: 2, color: Colors.black),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        mealTypeSelectedValue = newValue;
+                      });
+                    },
+                    items: <String>["Breakfast", "Lunch", "Dinner"]
+                        .map<DropdownMenuItem<String>>((e) {
+                      return DropdownMenuItem<String>(
+                          value: e, child: Text(e));
+                    }).toList(),
+                  ),
+                  DropdownButton<String>(
+                    value: selectedValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.black),
+                    underline: Container(height: 2, color: Colors.black),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        selectedValue = newValue;
+                      });
+                    },
+                    items: widget.foodSnapshots
+                        .map<DropdownMenuItem<String>>((e) {
+                      return DropdownMenuItem<String>(
+                          value: e.id, child: Text(e['name']));
+                    }).toList(),
+                  ),
                   Row(
                     children: [
-                      DropdownButton<String>(
-                        value: selectedValue,
-                        icon: Icon(Icons.arrow_downward),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(color: Colors.black),
-                        underline: Container(height: 2, color: Colors.black),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            selectedValue = newValue;
-                          });
-                        },
-                        items: widget.foodSnapshots
-                            .map<DropdownMenuItem<String>>((e) {
-                          return DropdownMenuItem<String>(
-                              value: e.id, child: Text(e['name']));
-                        }).toList(),
-                      ),
-                      DropdownButton<String>(
-                        value: mealTypeSelectedValue,
-                        icon: Icon(Icons.arrow_downward),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(color: Colors.black),
-                        underline: Container(height: 2, color: Colors.black),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            mealTypeSelectedValue = newValue;
-                          });
-                        },
-                        items: <String>["Breakfast", "Lunch", "Dinner"]
-                            .map<DropdownMenuItem<String>>((e) {
-                          return DropdownMenuItem<String>(
-                              value: e, child: Text(e));
-                        }).toList(),
-                      ),
-                      SizedBox(width: 20.0),
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(hintText: 'Quantity'),
