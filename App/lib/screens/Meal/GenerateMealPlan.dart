@@ -126,7 +126,6 @@ class _generateMealPlanState extends State<generateMealPlan> {
                 Random random = new Random();
 
                 for(int i = 0; i < endDate.difference(selectedDate).inDays; i++){
-                  print(currentDate.difference(endDate).inDays);
                   if (tempBreakfasts.isEmpty) tempBreakfasts = breakfastSnapshot.docs;
                   if (tempLunches.isEmpty) tempLunches = lunchSnapshot.docs;
                   if (tempDinners.isEmpty) tempDinners = dinnerSnapshot.docs;
