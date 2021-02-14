@@ -137,16 +137,16 @@ class _MealPlansState extends State<MealPlans> {
           ),
           Container(
               child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-            'View or Create new meal plans!',
-            style: TextStyle(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'View or Create new meal plans!',
+                style: TextStyle(
                   fontSize: 20.0,
-            ),
-          ),
                 ),
-              )),
+              ),
+            ),
+          )),
           Container(child: MealPlanDisplay())
         ]),
       ),
