@@ -46,8 +46,12 @@ class _aboutFamilyState extends State<aboutFamily> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(5.0, 30.0, 5.0, 30.0),
-            child: Text('Information about families dfsdf sdfdsf sdf dfsd fsdfsdf sdf sdfs d fd fsdf sdsdf',
+            child: Text('Families allow you to plan meals with others to ensure you have enough ingredients for every single one of you! There is no better way to plan your weekly shop',
               softWrap: true,
+              style: TextStyle(
+                fontSize: 15.0,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
           Expanded(

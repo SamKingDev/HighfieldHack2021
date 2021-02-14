@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
+import 'package:famealy/screens/Meal/CreateMeal.dart';
 import 'package:famealy/screens/Meal/ShoppingList.dart';
 import 'package:famealy/screens/Meal/MealPlans.dart';
 import 'package:famealy/screens/login/login_screen.dart';
@@ -124,6 +125,12 @@ class _ProfileState extends State<Profile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ShoppingList()),
+                )
+              }),
+              CustomListTile(Icons.add, 'Create New Meal', () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => createMeal()),
                 )
               }),
               CustomListTile(Icons.help, 'Tutorial', () => {}),

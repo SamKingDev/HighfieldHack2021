@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
+import 'package:famealy/screens/Meal/CreateMeal.dart';
 import 'package:famealy/screens/Meal/GenerateMealPlan.dart';
 import 'package:famealy/screens/Meal/SelectDay.dart';
 import 'package:famealy/screens/login/login_screen.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'ShoppingList.dart';
+
 class MealPlans extends StatefulWidget {
   @override
   _MealPlansState createState() => _MealPlansState();
@@ -93,6 +95,12 @@ class _MealPlansState extends State<MealPlans> {
               context,
               MaterialPageRoute(builder: (context) => ShoppingList()),
             )}),
+            CustomListTile(Icons.add, 'Create New Meal', () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => createMeal()),
+              )
+            }),
             CustomListTile(Icons.help, 'Tutorial', () => {}),
             CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
           ],
