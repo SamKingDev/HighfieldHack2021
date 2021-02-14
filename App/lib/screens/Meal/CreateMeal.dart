@@ -19,7 +19,6 @@ class Food {
   String id;
 
   Food(this.name, this.amount, this.id);
-
 }
 
 class createMeal extends StatefulWidget {
@@ -54,14 +53,13 @@ class _createMealState extends State<createMeal> {
         .orderBy('name')
         .get()
         .then((value) => setState(() {
-      widget.foodSnapshots = value.docs;
-      selectedValue = value.docs.first.id;
-    }));
+              widget.foodSnapshots = value.docs;
+              selectedValue = value.docs.first.id;
+            }));
     super.initState();
   }
 
   Widget build(BuildContext context) {
-
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
 
     return Scaffold(
@@ -200,8 +198,8 @@ class _createMealState extends State<createMeal> {
                             selectedValue = newValue;
                           });
                         },
-
-                        items: widget.foodSnapshots.map<DropdownMenuItem<String>>((e) {
+                        items: widget.foodSnapshots
+                            .map<DropdownMenuItem<String>>((e) {
                           return DropdownMenuItem<String>(
                               value: e.id, child: Text(e['name']));
                         }).toList(),
@@ -218,8 +216,8 @@ class _createMealState extends State<createMeal> {
                             mealTypeSelectedValue = newValue;
                           });
                         },
-
-                        items: <String>["Breakfast", "Lunch", "Dinner"].map<DropdownMenuItem<String>>((e) {
+                        items: <String>["Breakfast", "Lunch", "Dinner"]
+                            .map<DropdownMenuItem<String>>((e) {
                           return DropdownMenuItem<String>(
                               value: e, child: Text(e));
                         }).toList(),
@@ -240,16 +238,22 @@ class _createMealState extends State<createMeal> {
                         splashColor: Colors.grey[200],
                         onPressed: () {
                           final numericRegex =
-                          RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
-                          if (quantityInput.text == "" || quantityInput == null || !numericRegex.hasMatch(quantityInput.text)) {
+                              RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+                          if (quantityInput.text == "" ||
+                              quantityInput == null ||
+                              !numericRegex.hasMatch(quantityInput.text)) {
                             return showDialog(
-                                context: context, builder: (context) {
-                              return AlertDialog(
-                                  content: Text("Invalid Quantity")
-                              );
-                            });
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      content: Text("Invalid Quantity"));
+                                });
                           }
-                          widget.foods.add(new Food(widget.foodSnapshots.firstWhere((element) => element.id == selectedValue)['name'], int.parse(quantityInput.text), selectedValue));
+                          widget.foods.add(new Food(
+                              widget.foodSnapshots.firstWhere((element) =>
+                                  element.id == selectedValue)['name'],
+                              int.parse(quantityInput.text),
+                              selectedValue));
                           setState(() {});
                         },
                       ),
@@ -265,41 +269,56 @@ class _createMealState extends State<createMeal> {
                       label: Text('Create New Meal'),
                       onPressed: () async {
                         final numericRegex =
-                        RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
-                        if (widget.foods.length < 1) return showDialog(
-                            context: context, builder: (context) {
-                          return AlertDialog(
-                              content: Text("You must add at least one food")
-                          );
-                        });
-                        if (mealNameInput.text == null || mealNameInput.text == "") return showDialog(
-                            context: context, builder: (context) {
-                          return AlertDialog(
-                              content: Text("You must set the meal name")
-                          );
-                        });
-                        if (portionInput.text == null || portionInput.text == "" || !numericRegex.hasMatch(quantityInput.text)) return showDialog(
-                            context: context, builder: (context) {
-                          return AlertDialog(
-                              content: Text("You must add a number of potions and it must be a number")
-                          );
-                        });
+                            RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+                        if (widget.foods.length < 1)
+                          return showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    content:
+                                        Text("You must add at least one food"));
+                              });
+                        if (mealNameInput.text == null ||
+                            mealNameInput.text == "")
+                          return showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    content:
+                                        Text("You must set the meal name"));
+                              });
+                        if (portionInput.text == null ||
+                            portionInput.text == "" ||
+                            !numericRegex.hasMatch(quantityInput.text))
+                          return showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    content: Text(
+                                        "You must add a number of potions and it must be a number"));
+                              });
 //                        var foodArray = [];
 //                        for(var i in widget.foods)foodArray.add([i.id, i.amount]);
-                        DocumentReference docRef = await FirebaseFirestore.instance.collection('meals').add({
+                        DocumentReference docRef = await FirebaseFirestore
+                            .instance
+                            .collection('meals')
+                            .add({
                           "name": mealNameInput.text,
-                          "type":  mealTypeSelectedValue,
+                          "type": mealTypeSelectedValue,
                           "portions": int.parse(quantityInput.text)
                         });
-                        for (var i in widget.foods) FirebaseFirestore.instance.collection("meals").doc(docRef.id).collection("food").add({
-                          "foodId": i.id,
-                          "quantity": i.amount
-                        });
+                        for (var i in widget.foods)
+                          FirebaseFirestore.instance
+                              .collection("meals")
+                              .doc(docRef.id)
+                              .collection("food")
+                              .add({"foodId": i.id, "quantity": i.amount});
                         return showDialog(
-                            context: context, builder: (context) {
-                          return AlertDialog(
-                              content: Text("Meal successfully added")
-                          );
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                  content: Text("Meal successfully added"));
+                            });
                       },
                     ),
                   ),
@@ -340,21 +359,23 @@ class _ingredientsDropDown extends State<ingredientsDropDown> {
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
               children: <Widget>[
-                if (widget.foods != null) for (var i in widget.foods)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("x " + i.amount.toString() + " " + i.name),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        splashColor: Colors.grey[200],
-                        onPressed: () {
-                          widget.foods.removeWhere((element) => element.id == i.id);
-                          setState(() {});
-                        },
-                      ),
-                    ],
-                  ),
+                if (widget.foods != null)
+                  for (var i in widget.foods)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("x " + i.amount.toString() + " " + i.name),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          splashColor: Colors.grey[200],
+                          onPressed: () {
+                            widget.foods
+                                .removeWhere((element) => element.id == i.id);
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    ),
               ],
             ),
           ],
