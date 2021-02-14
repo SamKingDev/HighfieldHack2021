@@ -31,7 +31,7 @@ void main() async {
         '/createFamily': (context) => createFamily(),
         '/joinFamily' : (context) => joinFamily(),
         '/mealPlan' : (context) => MealPlans(),
-        '/shoppinglist':(context)=>ShoppingList(),
+        '/shoppinglist':(context)=>ShoppingList(null, null),
         '/shoppinglistmealplans':(context)=>ShoppingListMealPlans(),
         '/selectDay' : (context) => selectDay(null, null, null),
         '/dailyMealPlan' : (context) => dailyMealPlan(null, null),

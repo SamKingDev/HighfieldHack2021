@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
 import 'package:famealy/screens/Meal/CreateMeal.dart';
@@ -15,7 +16,8 @@ class menu extends StatefulWidget {
   @override
 
   String category;
-  menu(this.category);
+  Map<String, Food> foodMap = new Map<String, Food>();
+  menu(this.category, this.foodMap);
 
   _menuState createState() => _menuState();
 }
@@ -40,11 +42,11 @@ class _menuState extends State<menu> {
               ),
             ),
             children: <Widget>[
-              for ( var i in items ) Row(
+              for ( var i in widget.foodMap.values ) Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(i),
-                  Text('10')
+                  Text('${i.amount}x ${i.name}'),
+                  Text('${i.calories * i.amount}')
                 ],
               ),
             ],
@@ -59,6 +61,12 @@ class _menuState extends State<menu> {
 
 
 class ShoppingList extends StatefulWidget {
+  String mealPlanId = "";
+  String familyId = "";
+  List<Food> food = new List<Food>();
+
+  ShoppingList(this.mealPlanId, this.familyId);
+
   @override
   _ShoppingListState createState() => _ShoppingListState();
 }
@@ -79,9 +87,34 @@ class _ShoppingListState extends State<ShoppingList> {
       }
     });
     super.initState();
+    print(widget.familyId);
+    print(widget.mealPlanId);
+    FirebaseFirestore.instance.collection("families").doc(widget.familyId).collection("mealplan").doc(widget.mealPlanId).collection("meals").get().then((planMeals) {
+      for(var planMeal in planMeals.docs) {
+        FirebaseFirestore.instance.collection("meals").doc(planMeal["mealId"]).collection("food").get().then((foodItems) {
+          for(var foodItem in foodItems.docs) {
+            FirebaseFirestore.instance.collection("foods").doc(foodItem["foodId"]).get().then((food) => {
+              setState(() {
+                widget.food.add(new Food(food["name"], foodItem["quantity"], food.id, food["calorie"]));
+              })
+            });
+          }
+        });
+      }
+    });
   }
 
   Widget build(BuildContext context) {
+    Map<String, Food> foodMap = new Map<String, Food>();
+    for (Food f in widget.food) {
+      if (foodMap.containsKey(f.id)){
+        Food newFood = new Food(f.name, f.amount + foodMap[f.id].amount, f.id, f.calories);
+        foodMap.remove(f.id);
+        foodMap.putIfAbsent(newFood.id, () => newFood);
+      } else {
+        foodMap.putIfAbsent(f.id, () => f);
+      }
+    }
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     return Scaffold(
 
@@ -162,10 +195,7 @@ class _ShoppingListState extends State<ShoppingList> {
               height: 50,
             ),
           ),
-          Container(child: menu('Fresh Food')),
-          Container(child: menu('Bakery')),
-          Container(child: menu('Frozen Food')),
-          Container(child: menu('Food Cupboard')),
+          Container(child: menu('Food', foodMap)),
           Container(),
           Container(),
         ]),

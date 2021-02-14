@@ -17,8 +17,9 @@ class Food {
   String name;
   int amount;
   String id;
+  int calories;
 
-  Food(this.name, this.amount, this.id);
+  Food(this.name, this.amount, this.id, this.calories);
 }
 
 class createMeal extends StatefulWidget {
@@ -253,7 +254,7 @@ class _createMealState extends State<createMeal> {
                               widget.foodSnapshots.firstWhere((element) =>
                                   element.id == selectedValue)['name'],
                               int.parse(quantityInput.text),
-                              selectedValue));
+                              selectedValue, null));
                           setState(() {});
                         },
                       ),
