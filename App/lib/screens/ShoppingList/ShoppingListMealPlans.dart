@@ -152,7 +152,6 @@ class DateListTile extends StatefulWidget {
 class _DateListTile extends State<DateListTile> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
       child: Container(
@@ -197,7 +196,7 @@ class MealPlanDisplay extends StatefulWidget {
 }
 
 class _MealPlanDisplayState extends State<MealPlanDisplay> {
-  String familyId;
+  String familyId = "";
   StreamSubscription<User> loginStateSubscription;
   List<QueryDocumentSnapshot> docs = null;
 
@@ -217,10 +216,10 @@ class _MealPlanDisplayState extends State<MealPlanDisplay> {
         documentReference.snapshots().listen((event) {
           setState(() {
             if (!mounted) return;
-            familyId = event.data()["familyId"];
+            widget.familyId = event.data()["familyId"];
             FirebaseFirestore.instance
                 .collection('families')
-                .doc(familyId)
+                .doc(widget.familyId)
                 .collection('mealplan')
                 .get()
                 .then((value) => setState(() {
@@ -245,7 +244,7 @@ class _MealPlanDisplayState extends State<MealPlanDisplay> {
                 () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => selectDay(docs[i].id, docs[i]['startDate'].toDate(), docs[i]['endDate'].toDate())),
+                    MaterialPageRoute(builder: (context) => ShoppingList(docs[i].id, widget.familyId)),
                   );
                 }),
           ],
