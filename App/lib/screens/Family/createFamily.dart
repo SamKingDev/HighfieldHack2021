@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'family.dart';
+
 class createFamily extends StatefulWidget {
   @override
   _createFamilyState createState() => _createFamilyState();
@@ -72,7 +74,11 @@ class _createFamilyState extends State<createFamily> {
             DocumentReference docRef = await FirebaseFirestore.instance.collection('families').add({
               "name": familyNameInput.text,
             });
-            FirebaseFirestore.instance.collection("users").doc(userId).update({"familyId": docRef.id, "role": "Creator"});
+            await FirebaseFirestore.instance.collection("users").doc(userId).update({"familyId": docRef.id, "role": "Creator"});
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FamilyPage()),
+            );
           }, icon: Icon (Icons.add) , label: Text ('Create new family'),)
       ],
     ),
