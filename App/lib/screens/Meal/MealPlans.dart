@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
 import 'package:famealy/screens/Meal/GenerateMealPlan.dart';
@@ -8,6 +9,7 @@ import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'ShoppingList.dart';
 class MealPlans extends StatefulWidget {
@@ -16,8 +18,8 @@ class MealPlans extends StatefulWidget {
 }
 
 class _MealPlansState extends State<MealPlans> {
-
   StreamSubscription<User> loginStateSubscription;
+  String familyId = "";
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _MealPlansState extends State<MealPlans> {
     });
     super.initState();
   }
+
   Widget build(BuildContext context) {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     return Scaffold(
@@ -62,24 +65,24 @@ class _MealPlansState extends State<MealPlans> {
             CustomListTile(
                 Icons.person,
                 'Profile',
-                    () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Profile()),
-                  )
-                }),
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Profile()),
+                      )
+                    }),
             CustomListTile(
                 Icons.group,
                 'Family Group',
-                    () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FamilyPage()),
-                  )
-                }),
+                () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FamilyPage()),
+                      )
+                    }),
             CustomListTile(
                 Icons.fastfood,
-                'Meal Plan',
+                'Meal Plan'
                     () => {
                   Navigator.push(
                     context,
@@ -100,7 +103,9 @@ class _MealPlansState extends State<MealPlans> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {createNewMealPlan(context);},
+        onPressed: () {
+          createNewMealPlan(context);
+        },
         child: Icon(Icons.add),
         backgroundColor: Colors.blueGrey,
       ),
@@ -112,37 +117,11 @@ class _MealPlansState extends State<MealPlans> {
               height: 50,
             ),
           ),
-          Container(
-              child: DateListTile('date1', () {
-            redirect(context);
-          })),
-          Container(
-              child: DateListTile('date2', () {
-            redirect(context);
-          })),
-          Container(
-              child: DateListTile('date3', () {
-            redirect(context);
-          })),
-          Container(
-              child: DateListTile('date4', () {
-            redirect(context);
-          })),
-          Container(
-              child: DateListTile('date5', () {
-            redirect(context);
-          })),
+          Container(child: MealPlanDisplay())
         ]),
       ),
     );
   }
-}
-
-Function redirect(context) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => selectDay()),
-  );
 }
 
 Function createNewMealPlan(context) {
@@ -197,5 +176,74 @@ class _DateListTile extends State<DateListTile> {
         ),
       ),
     );
+  }
+}
+
+class MealPlanDisplay extends StatefulWidget {
+  @override
+  String familyId;
+
+  MealPlanDisplay() {}
+
+  _MealPlanDisplayState createState() => _MealPlanDisplayState();
+}
+
+class _MealPlanDisplayState extends State<MealPlanDisplay> {
+  String familyId;
+  StreamSubscription<User> loginStateSubscription;
+  List<QueryDocumentSnapshot> docs = null;
+
+  @override
+  Future<void> initState() {
+    var authBloc = Provider.of<AuthBloc>(context, listen: false);
+    loginStateSubscription = authBloc.currentUser.listen((fbUser) {
+      if (fbUser == null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+        );
+      } else {
+        DocumentReference documentReference =
+            FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
+        documentReference.snapshots().listen((event) {
+          setState(() {
+            if (!mounted) return;
+            familyId = event.data()["familyId"];
+            FirebaseFirestore.instance
+                .collection('families')
+                .doc(familyId)
+                .collection('mealplan')
+                .get()
+                .then((value) => setState(() {
+                        docs = value.docs;
+                      }));
+          });
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> list = new List<Widget>();
+    if (docs != null) {
+      for (int i = 0; i < docs.length; i++) {
+        list.add(Row(
+          children: [
+            DateListTile(
+                new DateFormat.yMMMMd('en_US')
+                    .format(docs[i]["startDate"].toDate()),
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => selectDay(docs[i].id, docs[i]['startDate'].toDate(), docs[i]['endDate'].toDate())),
+                  );
+                }),
+          ],
+        ));
+      }
+    }
+    return new Column(children: list);
   }
 }
