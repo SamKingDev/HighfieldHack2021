@@ -125,6 +125,18 @@ class _ShoppingListMealPlansState extends State<ShoppingListMealPlans> {
               height: 50,
             ),
           ),
+          Container(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'View Shopping Lists!',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ),
+              )),
           Container(child: MealPlanDisplay())
         ]),
       ),
