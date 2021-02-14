@@ -169,14 +169,18 @@ class _mealTile extends State<mealTile> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.mealType),
+            Text(widget.mealType,
+            style: TextStyle(
+              fontSize: 20.0
+            ),),
             DropdownButton<String>(
               value: selectedValue,
               icon: Icon(Icons.arrow_downward),
               iconSize: 24,
               elevation: 16,
-              style: TextStyle(color: Colors.deepPurple),
-              underline: Container(height: 2, color: Colors.deepPurple),
+              style: TextStyle(color: Colors.black,
+              fontSize: 20.0),
+              underline: Container(height: 2, color: Colors.black),
               onChanged: (String newValue) {
                 FirebaseFirestore.instance
                     .collection('families')
