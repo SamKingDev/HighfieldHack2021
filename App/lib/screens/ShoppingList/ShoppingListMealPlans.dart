@@ -5,6 +5,7 @@ import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
 import 'package:famealy/screens/Meal/CreateMeal.dart';
 import 'package:famealy/screens/Meal/GenerateMealPlan.dart';
+import 'package:famealy/screens/Meal/MealPlans.dart';
 import 'package:famealy/screens/Meal/SelectDay.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
@@ -88,7 +89,7 @@ class _ShoppingListMealPlansState extends State<ShoppingListMealPlans> {
                     () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShoppingListMealPlans()),
+                    MaterialPageRoute(builder: (context) => MealPlans()),
                   )
                 }),
             CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
