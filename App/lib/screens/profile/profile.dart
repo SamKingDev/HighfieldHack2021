@@ -121,11 +121,11 @@ class _ProfileState extends State<Profile> {
                           MaterialPageRoute(builder: (context) => mealPlan()),
                         )
                       }),
-              CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ShoppingList()),
-              )
-              }),
+              CustomListTile(Icons.list, 'Shopping List', () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ShoppingList()),
+                )}),
               CustomListTile(Icons.help, 'Tutorial', () => {}),
               CustomListTile(Icons.logout, 'Logout', () => {authBloc.logout()}),
             ],
