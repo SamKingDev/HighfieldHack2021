@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Family/family.dart';
 import 'package:famealy/screens/Meal/CreateMeal.dart';
-import 'package:famealy/screens/Meal/ShoppingList.dart';
+import 'package:famealy/screens/ShoppingList/ShoppingList.dart';
 import 'package:famealy/screens/Meal/MealPlans.dart';
+import 'package:famealy/screens/ShoppingList/ShoppingListMealPlans.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -124,7 +125,7 @@ class _ProfileState extends State<Profile> {
               CustomListTile(Icons.list, 'Shopping List', () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ShoppingList()),
+                  MaterialPageRoute(builder: (context) => ShoppingListMealPlans()),
                 )
               }),
               CustomListTile(Icons.add, 'Create New Meal', () => {

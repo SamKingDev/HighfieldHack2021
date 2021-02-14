@@ -6,21 +6,20 @@ import 'package:famealy/screens/Family/family.dart';
 import 'package:famealy/screens/Meal/CreateMeal.dart';
 import 'package:famealy/screens/Meal/GenerateMealPlan.dart';
 import 'package:famealy/screens/Meal/SelectDay.dart';
-import 'package:famealy/screens/ShoppingList/ShoppingListMealPlans.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:famealy/screens/ShoppingList/ShoppingList.dart';
+import 'ShoppingList.dart';
 
-class MealPlans extends StatefulWidget {
+class ShoppingListMealPlans extends StatefulWidget {
   @override
-  _MealPlansState createState() => _MealPlansState();
+  _ShoppingListMealPlansState createState() => _ShoppingListMealPlansState();
 }
 
-class _MealPlansState extends State<MealPlans> {
+class _ShoppingListMealPlansState extends State<ShoppingListMealPlans> {
   StreamSubscription<User> loginStateSubscription;
   String familyId = "";
 
@@ -89,7 +88,7 @@ class _MealPlansState extends State<MealPlans> {
                     () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MealPlans()),
+                    MaterialPageRoute(builder: (context) => ShoppingListMealPlans()),
                   )
                 }),
             CustomListTile(Icons.list, 'Shopping List', () => {Navigator.push(
