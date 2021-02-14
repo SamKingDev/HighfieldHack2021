@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famealy/blocs/auth_bloc.dart';
 import 'package:famealy/screens/Meal/CreateMeal.dart';
 import 'package:famealy/screens/Meal/MealPlans.dart';
-import 'package:famealy/screens/Meal/ShoppingList.dart';
+import 'package:famealy/screens/ShoppingList/ShoppingList.dart';
+import 'package:famealy/screens/ShoppingList/ShoppingListMealPlans.dart';
 import 'package:famealy/screens/login/login_screen.dart';
 import 'package:famealy/screens/profile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FamilyPage extends StatefulWidget {
+  String inviteCode = "";
+  String groupName = "";
   @override
   _FamilyPageState createState() => _FamilyPageState();
 }
@@ -28,6 +32,27 @@ class _FamilyPageState extends State<FamilyPage> {
             builder: (context) => LoginScreen(),
           ),
         );
+      } else {
+        DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('users').doc(fbUser.uid);
+        documentReference.snapshots().listen((event) {
+          setState(() {
+            if (!mounted) return;
+            if (event.data()["familyId"] != null &&
+                event.data()["familyId"] != "") {
+              DocumentReference familyReference = FirebaseFirestore.instance
+                  .collection('families')
+                  .doc(event.data()["familyId"]);
+              familyReference.snapshots().listen((fEvent) {
+                setState(() {
+                  if (!mounted) return;
+                  widget.groupName = fEvent.data()["name"];
+                  widget.inviteCode = fEvent.id;
+                });
+              });
+            }
+          });
+        });
       }
     });
     super.initState();
@@ -137,12 +162,9 @@ class _FamilyPageState extends State<FamilyPage> {
             Container(
                 child: Column(
               children: [
-                members(() {}, Icons.group, 'Members'),
-                CustomProfileTile(Icons.account_box, 'Name', 'FIODJFIJSD'),
+                CustomProfileTile(Icons.account_box, 'Name', widget.groupName),
                 CustomProfileTile(
-                    Icons.assignment, 'Dietry Requirements', 'FIODJFIJSD'),
-                CustomProfileTile(
-                    Icons.announcement, 'Allergies', 'FIODJFIJSD'),
+                    Icons.assignment, 'Invite Code', widget.inviteCode),
               ],
             )),
             Container(),
@@ -165,7 +187,7 @@ class _FamilyPageState extends State<FamilyPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShoppingList()),
+                    MaterialPageRoute(builder: (context) => ShoppingListMealPlans()),
                   );
                 },
                 icon: Icon(Icons.list),
@@ -230,70 +252,5 @@ class _FamilyListWidgetState extends State<FamilyListWidget> {
         },
       ),
     ));
-  }
-}
-
-class members extends StatefulWidget {
-  Function onTap;
-  String requirement;
-  IconData icon;
-  String text;
-
-  members(this.onTap, this.icon, this.text);
-
-  @override
-  _members createState() => _members();
-}
-
-class _members extends State<members> {
-  String selectedValue = 'Member 1';
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[400]))),
-        child: Container(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, //x axis
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(widget.icon),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      widget.text,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                ],
-              ),
-              DropdownButton<String>(
-                value: selectedValue,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.black),
-                underline: Container(height: 2, color: Colors.black),
-                onChanged: (String newValue) {
-                  setState(() {
-                    selectedValue = newValue;
-                  });
-                },
-                items: <String>['Member 1', 'Member 2', 'Member 3', 'Member 4']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                      value: value, child: Text(value));
-                }).toList(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

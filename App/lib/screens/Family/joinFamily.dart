@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'family.dart';
+
 class joinFamily extends StatefulWidget {
   @override
   _joinFamilyState createState() => _joinFamilyState();
@@ -91,7 +93,11 @@ class _joinFamilyState extends State<joinFamily> {
                   );
                 });
               else {
-                FirebaseFirestore.instance.collection("users").doc(userId).update({"familyId": familyIdInput.text, "role": "Newb"});
+                await FirebaseFirestore.instance.collection("users").doc(userId).update({"familyId": familyIdInput.text, "role": "Newb"});
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FamilyPage()),
+                );
               }
             }, icon: Icon(Icons.send), label: Text('Join Family'),)
         ],
